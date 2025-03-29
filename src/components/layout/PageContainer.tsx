@@ -9,14 +9,14 @@ interface PageContainerProps {
 
 const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
   return (
-    <TooltipProvider>
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      <TooltipProvider>
         <main className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
           {children}
         </main>
-      </div>
-    </TooltipProvider>
+      </TooltipProvider>
+    </div>
   );
 };
 
