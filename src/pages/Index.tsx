@@ -1,17 +1,16 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Book, FileText, Calculator, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import PageContainer from '@/components/layout/PageContainer';
-import SubjectCard from '@/components/ui/subject-card';
-import ProgressCard from '@/components/ui/progress-card';
 import OverallProgress from '@/components/dashboard/OverallProgress';
 import UpcomingEvents from '@/components/dashboard/UpcomingEvents';
 import Tasks from '@/components/dashboard/Tasks';
 import QuestionSetsTab from '@/components/dashboard/QuestionSetsTab';
 import PracticeTestsTab from '@/components/dashboard/PracticeTestsTab';
 import ResultsTab from '@/components/dashboard/ResultsTab';
+import ImprovementRecommendations from '@/components/dashboard/ImprovementRecommendations';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState<string>('Question Sets');
@@ -22,6 +21,54 @@ const Dashboard = () => {
     if (hours < 18) return 'Good Afternoon';
     return 'Good Evening';
   };
+
+  // Sample data for weak areas
+  const weakAreas = [
+    { subject: "English", topic: "Grammar", score: 55 },
+    { subject: "Math", topic: "Geometry", score: 45 },
+    { subject: "Hindi", topic: "Vocabulary", score: 60 }
+  ];
+
+  // Sample data for recommendations
+  const recommendations = [
+    { 
+      id: "1", 
+      title: "Grammar Practice Set", 
+      subject: "English", 
+      type: "practice" as const, 
+      difficulty: "Medium" as const,
+      description: "Interactive exercises focusing on grammar rules and sentence structure",
+      link: "/practice/english/grammar",
+      urgent: true
+    },
+    { 
+      id: "2", 
+      title: "Geometry Basics", 
+      subject: "Math", 
+      type: "quiz" as const, 
+      difficulty: "Hard" as const,
+      description: "Quick assessment of fundamental geometric concepts and formulas",
+      link: "/quizzes/start/1"
+    },
+    { 
+      id: "3", 
+      title: "Algebraic Equations", 
+      subject: "Math", 
+      type: "practice" as const, 
+      difficulty: "Medium" as const,
+      description: "Step-by-step practice for solving different types of algebraic equations",
+      link: "/practice/math/algebra"
+    },
+    { 
+      id: "4", 
+      title: "Vocabulary Builder", 
+      subject: "Hindi", 
+      type: "test" as const, 
+      difficulty: "Easy" as const,
+      description: "Comprehensive test to evaluate and improve your Hindi vocabulary",
+      link: "/tests/start/1" 
+    }
+  ];
   
   return (
     <PageContainer>
@@ -50,7 +97,7 @@ const Dashboard = () => {
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg shadow p-4 mb-6">
+          <div className="bg-white rounded-lg shadow-md p-4 mb-6">
             <div className="flex border-b">
               <button
                 className={`px-4 py-2 text-sm font-medium ${
@@ -89,44 +136,10 @@ const Dashboard = () => {
             <ResultsTab activeTab={activeTab} />
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h2 className="font-medium text-lg mb-3">Personalized Recommendations</h2>
-              <SubjectCard
-                subject="English"
-                score={55}
-                status="Needs improvement"
-                icon={<FileText className="h-5 w-5 text-blue-500" />}
-                bgColor="bg-white"
-                viewDetailsLink="/subjects/english"
-                recommendedPractice={[
-                  { title: 'Grammar Practice Set', link: '/practice/english/grammar' },
-                  { title: 'Vocabulary Builder', link: '/practice/english/vocabulary' },
-                ]}
-              />
-            </div>
-            
-            <div>
-              <h2 className="font-medium text-lg mb-3">Improvement Plan for Mathematics</h2>
-              <ProgressCard
-                title="Algebraic Equations"
-                progress={66}
-                difficultyLevel="Medium"
-                inProgress={true}
-                actionText="Practice"
-                actionLink="/practice/math/algebra"
-                bgColor="bg-white"
-              />
-              <ProgressCard
-                title="Geometry Basics"
-                progress={40}
-                difficultyLevel="Hard"
-                actionText="Practice"
-                actionLink="/practice/math/geometry"
-                bgColor="bg-white"
-              />
-            </div>
-          </div>
+          <ImprovementRecommendations 
+            weakAreas={weakAreas}
+            recommendations={recommendations}
+          />
         </div>
         
         <div className="space-y-6">
@@ -144,33 +157,11 @@ const Dashboard = () => {
               { id: 2, title: 'Prepare for Math quiz', completed: false, link: '/tasks/2' },
               { id: 3, title: 'Finish English practice', completed: false, link: '/tasks/3' },
               { id: 4, title: 'Read G.S. chapter', completed: true, link: '/tasks/4' },
+              { id: 5, title: 'Submit science project', completed: false, link: '/tasks/5' },
+              { id: 6, title: 'Review history notes', completed: false, link: '/tasks/6' },
             ]}
           />
         </div>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <SubjectCard
-          subject="Hindi"
-          score={65}
-          status="Average"
-          icon={<Book className="h-5 w-5 text-yellow-500" />}
-          bgColor="bg-white"
-          viewDetailsLink="/subjects/hindi"
-          recommendedPractice={[
-            { title: 'Comprehension Practice', link: '/practice/hindi/comprehension' },
-          ]}
-        />
-        
-        <SubjectCard
-          subject="Math"
-          score={85}
-          status="Good progress"
-          icon={<Calculator className="h-5 w-5 text-green-500" />}
-          bgColor="bg-white"
-          viewDetailsLink="/subjects/math"
-          recommendedPractice={[]}
-        />
       </div>
     </PageContainer>
   );

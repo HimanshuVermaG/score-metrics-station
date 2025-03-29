@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import PageContainer from '@/components/layout/PageContainer';
@@ -13,10 +12,8 @@ import { ArrowRight, Book, Clock, Award, TrendingUp, BarChart2 } from 'lucide-re
 const SubjectDetail = () => {
   const { subjectId } = useParams<{ subjectId: string }>();
   
-  // Get sample questions for this subject
   const sampleQuestions = getTestQuestions(subjectId || 'Math', 3);
   
-  // Dummy data for the subject
   const subjectDetails = {
     Math: {
       name: 'Mathematics',
@@ -80,7 +77,6 @@ const SubjectDetail = () => {
     }
   };
 
-  // Find the correct subject, fall back to Math if not found
   const subject = (subjectDetails as any)[subjectId || 'Math'] || subjectDetails.Math;
 
   const getDifficultyColor = (difficulty: string) => {
@@ -184,6 +180,17 @@ const SubjectDetail = () => {
                     ))}
                   </div>
                 </div>
+
+                <div className="mt-6">
+                  <Button 
+                    asChild
+                    className="w-full bg-brand-purple hover:bg-purple-700"
+                  >
+                    <Link to={`/subjects/${subjectId}/improve`}>
+                      View Detailed Improvement Plan
+                    </Link>
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -217,6 +224,17 @@ const SubjectDetail = () => {
                     </div>
                   </div>
                 ))}
+              </div>
+
+              <div className="mt-6 flex justify-center">
+                <Button 
+                  asChild
+                  className="bg-brand-purple hover:bg-purple-700"
+                >
+                  <Link to={`/subjects/${subjectId}/improve`}>
+                    See Full Improvement Plan
+                  </Link>
+                </Button>
               </div>
             </CardContent>
           </Card>

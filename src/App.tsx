@@ -11,6 +11,7 @@ import Practice from "./pages/Practice";
 import Report from "./pages/Report";
 import NotFound from "./pages/NotFound";
 import SubjectDetail from "./pages/SubjectDetail";
+import SubjectImprovement from "./pages/SubjectImprovement";
 import TestResult from "./pages/TestResult";
 import TasksPage from "./pages/TasksPage";
 import TestPage from "./pages/TestPage";
@@ -36,7 +37,9 @@ const App = () => (
           <Route path="/practice/:subject/:topicId" element={<PracticePage />} />
           <Route path="/report" element={<Report />} />
           <Route path="/subjects/:subjectId" element={<SubjectDetail />} />
+          <Route path="/subjects/:subjectId/improve" element={<SubjectImprovement />} />
           <Route path="/tasks" element={<TasksPage />} />
+          <Route path="/tasks/:taskId" element={<TaskPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Toaster />
