@@ -9,6 +9,9 @@ import Quizzes from "./pages/Quizzes";
 import Practice from "./pages/Practice";
 import Report from "./pages/Report";
 import NotFound from "./pages/NotFound";
+import SubjectDetail from "./pages/SubjectDetail";
+import TestResult from "./pages/TestResult";
+import TasksPage from "./pages/TasksPage";
 
 const queryClient = new QueryClient();
 
@@ -21,9 +24,13 @@ const App = () => (
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/tests" element={<Tests />} />
+        <Route path="/tests/review/:testId" element={<TestResult />} />
         <Route path="/quizzes" element={<Quizzes />} />
+        <Route path="/quizzes/review/:testId" element={<TestResult />} />
         <Route path="/practice" element={<Practice />} />
         <Route path="/report" element={<Report />} />
+        <Route path="/subjects/:subjectId" element={<SubjectDetail />} />
+        <Route path="/tasks" element={<TasksPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

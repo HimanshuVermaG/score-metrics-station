@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface TestResult {
   id: number;
@@ -89,9 +90,9 @@ const ResultsTab: React.FC<ResultsTabProps> = ({ activeTab }) => {
                   {result.date}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
-                  <a href={`/results/${result.id}`} className="text-brand-purple hover:underline">
+                  <Link to={`/tests/review/${result.id}`} className="text-brand-purple hover:underline">
                     View Details
-                  </a>
+                  </Link>
                 </td>
               </tr>
             ))}

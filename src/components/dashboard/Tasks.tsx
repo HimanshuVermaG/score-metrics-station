@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import TaskItem from '@/components/ui/task-item';
 
 interface Task {
@@ -30,9 +31,9 @@ const Tasks: React.FC<TasksProps> = ({ tasks }) => {
       </div>
       
       <div className="mt-4 text-center">
-        <a href="/tasks" className="text-sm text-brand-purple hover:underline">
+        <Link to="/tasks" className="text-sm text-brand-purple hover:underline">
           View All Tasks
-        </a>
+        </Link>
       </div>
     </div>
   );
