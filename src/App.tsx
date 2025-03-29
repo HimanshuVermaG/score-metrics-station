@@ -12,6 +12,9 @@ import NotFound from "./pages/NotFound";
 import SubjectDetail from "./pages/SubjectDetail";
 import TestResult from "./pages/TestResult";
 import TasksPage from "./pages/TasksPage";
+import TestPage from "./pages/TestPage";
+import QuizPage from "./pages/QuizPage";
+import PracticePage from "./pages/PracticePage";
 
 const queryClient = new QueryClient();
 
@@ -24,10 +27,13 @@ const App = () => (
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/tests" element={<Tests />} />
+        <Route path="/tests/start/:testId" element={<TestPage />} />
         <Route path="/tests/review/:testId" element={<TestResult />} />
         <Route path="/quizzes" element={<Quizzes />} />
+        <Route path="/quizzes/start/:quizId" element={<QuizPage />} />
         <Route path="/quizzes/review/:testId" element={<TestResult />} />
         <Route path="/practice" element={<Practice />} />
+        <Route path="/practice/:subject/:topicId" element={<PracticePage />} />
         <Route path="/report" element={<Report />} />
         <Route path="/subjects/:subjectId" element={<SubjectDetail />} />
         <Route path="/tasks" element={<TasksPage />} />

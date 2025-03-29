@@ -1,275 +1,209 @@
 
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle, XCircle, BookOpen, Trophy } from 'lucide-react';
 import PageContainer from '@/components/layout/PageContainer';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-
-interface Question {
-  id: number;
-  question: string;
-  userAnswer: string;
-  correctAnswer: string;
-  explanation: string;
-}
+import { Button } from '@/components/ui/button';
+import { getTestQuestions } from '@/data/questions';
+import QuizQuestion from '@/components/quiz/QuizQuestion';
+import { Clock, Award, Target, ArrowLeft } from 'lucide-react';
 
 const TestResult = () => {
-  const { testId } = useParams();
+  const { testId } = useParams<{ testId: string }>();
   
-  // Mock data (in a real app, this would come from an API)
-  const testResults = {
-    "1": {
-      id: 1,
-      subject: "Math",
-      title: "Number Theory Quiz",
-      date: "May 15, 2023",
-      score: 85,
-      totalQuestions: 20,
-      correctAnswers: 17,
-      timeSpent: "25 minutes",
-      classAverage: 72,
-      classHighest: 95,
-      questions: [
-        {
-          id: 1,
-          question: "What is the LCM of 12 and 18?",
-          userAnswer: "36",
-          correctAnswer: "36",
-          explanation: "To find the LCM, first find the prime factorization: 12 = 2² × 3, 18 = 2 × 3². The LCM uses the highest power of each prime: 2² × 3² = 36."
-        },
-        {
-          id: 2,
-          question: "Is 17 a prime number?",
-          userAnswer: "Yes",
-          correctAnswer: "Yes",
-          explanation: "A prime number has exactly two factors: 1 and itself. 17 is only divisible by 1 and 17, so it is prime."
-        },
-        {
-          id: 3,
-          question: "What is the HCF of 24 and 36?",
-          userAnswer: "12",
-          correctAnswer: "12",
-          explanation: "To find the HCF, find the prime factorization: 24 = 2³ × 3, 36 = 2² × 3². The HCF uses the lowest power of each common prime: 2² × 3 = 12."
-        }
-      ]
-    },
-    "2": {
-      id: 2,
-      subject: "English",
-      title: "Grammar Test",
-      date: "May 10, 2023",
-      score: 70,
-      totalQuestions: 30,
-      correctAnswers: 21,
-      timeSpent: "40 minutes",
-      classAverage: 68,
-      classHighest: 90,
-      questions: [
-        {
-          id: 1,
-          question: "Identify the correct sentence: 'She don't like ice cream' or 'She doesn't like ice cream'",
-          userAnswer: "She doesn't like ice cream",
-          correctAnswer: "She doesn't like ice cream",
-          explanation: "For third-person singular subjects (he, she, it), we use 'doesn't' instead of 'don't'."
-        },
-        {
-          id: 2,
-          question: "Which is the correct spelling: 'Recieve' or 'Receive'?",
-          userAnswer: "Recieve",
-          correctAnswer: "Receive",
-          explanation: "The correct spelling follows the rule 'i before e except after c'. So it's 'receive'."
-        }
-      ]
-    }
+  // In a real app, this would be fetched from a backend
+  // For now, we'll create mock data
+  const testResult = {
+    id: testId,
+    title: 'Mathematics Chapter Test',
+    subject: 'Math',
+    score: 75,
+    totalQuestions: 20,
+    correctAnswers: 15,
+    incorrectAnswers: 5,
+    timeTaken: '18:45',
+    date: 'May 20, 2023',
+    questionsData: getTestQuestions('Math', 5),
+    improvement: [
+      { topic: 'Algebraic Equations', recommendation: 'Practice basic algebraic manipulations' },
+      { topic: 'Geometry', recommendation: 'Review properties of triangles' }
+    ]
   };
   
-  const result = testResults[testId as keyof typeof testResults];
-  
-  if (!result) {
-    return (
-      <PageContainer>
-        <div className="text-center py-10">
-          <h1 className="text-2xl font-bold mb-2">Test Result Not Found</h1>
-          <p className="mb-4">The test result you're looking for doesn't exist.</p>
-          <Link to="/tests" className="text-brand-purple hover:underline">
-            View All Tests
-          </Link>
-        </div>
-      </PageContainer>
-    );
-  }
-  
-  // Calculate the percentage of correct answers
-  const accuracy = Math.round((result.correctAnswers / result.totalQuestions) * 100);
-  
+  // Determine if returning to tests or quizzes based on the URL
+  const returnPath = window.location.pathname.includes('/tests') ? '/tests' : '/quizzes';
+  const itemType = returnPath === '/tests' ? 'Test' : 'Quiz';
+
   return (
     <PageContainer>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold">{result.subject}: {result.title}</h1>
-        <p className="text-gray-500">Completed on {result.date} • {result.timeSpent}</p>
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">{testResult.title} Results</h1>
+          <p className="text-gray-500">Completed on {testResult.date}</p>
+        </div>
+        <Button 
+          variant="outline" 
+          asChild
+          className="flex items-center"
+        >
+          <Link to={returnPath}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to {returnPath === '/tests' ? 'Tests' : 'Quizzes'}
+          </Link>
+        </Button>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg shadow p-5 mb-6">
-            <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-              <div className="text-center md:text-left mb-4 md:mb-0">
-                <div className="text-sm text-gray-500 mb-1">Your Score</div>
-                <div className="text-4xl font-bold text-brand-purple">{result.score}%</div>
-                <div className="text-sm text-gray-500">
-                  {result.correctAnswers} / {result.totalQuestions} correct
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <Card className="bg-gray-50">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center">
+              <Award className="mr-2 h-5 w-5 text-brand-purple" />
+              Score
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-center">
+              <div className="relative inline-block">
+                <svg className="w-32 h-32" viewBox="0 0 36 36">
+                  <path
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    fill="none"
+                    stroke="#eaeaea"
+                    strokeWidth="3"
+                  />
+                  <path
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    fill="none"
+                    stroke="#8B5CF6"
+                    strokeWidth="3"
+                    strokeDasharray={`${testResult.score}, 100`}
+                  />
+                </svg>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                  <div className="text-3xl font-bold">{testResult.score}%</div>
                 </div>
               </div>
-              
-              <div className="flex items-center space-x-8">
-                <div className="text-center">
-                  <div className="text-sm text-gray-500 mb-1">Class Average</div>
-                  <div className="text-2xl font-medium">{result.classAverage}%</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-sm text-gray-500 mb-1">Class Highest</div>
-                  <div className="text-2xl font-medium">{result.classHighest}%</div>
-                </div>
-              </div>
+              <p className="mt-2 text-gray-600">{testResult.correctAnswers} correct out of {testResult.totalQuestions}</p>
             </div>
-            
-            <div className="flex justify-between items-center text-sm text-gray-500 mb-2">
-              <span>Your Score</span>
-              <span>{result.score}%</span>
-            </div>
-            <Progress value={result.score} className="h-2 mb-4" />
-            
-            <div className="flex justify-between items-center text-sm text-gray-500 mb-2">
-              <span>Class Average</span>
-              <span>{result.classAverage}%</span>
-            </div>
-            <Progress value={result.classAverage} className="h-2 bg-gray-200" />
-          </div>
-          
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <div className="p-4 border-b">
-              <h2 className="text-lg font-medium">Questions and Answers</h2>
-              <p className="text-sm text-gray-500">Review your performance on each question</p>
-            </div>
-            
-            <div className="divide-y">
-              {result.questions.map((question: Question) => (
-                <div key={question.id} className="p-4">
-                  <div className="flex items-start">
-                    <div className="mr-3">
-                      {question.userAnswer === question.correctAnswer ? (
-                        <CheckCircle className="h-5 w-5 text-green-500" />
-                      ) : (
-                        <XCircle className="h-5 w-5 text-red-500" />
-                      )}
-                    </div>
-                    <div>
-                      <h3 className="font-medium mb-2">Question {question.id}: {question.question}</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
-                        <div>
-                          <div className="text-sm font-medium">Your Answer</div>
-                          <div className={`text-sm ${
-                            question.userAnswer === question.correctAnswer 
-                              ? 'text-green-600' 
-                              : 'text-red-600'
-                          }`}>
-                            {question.userAnswer}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-sm font-medium">Correct Answer</div>
-                          <div className="text-sm text-green-600">{question.correctAnswer}</div>
-                        </div>
-                      </div>
-                      <div className="mt-2 p-3 bg-gray-50 rounded-lg">
-                        <div className="text-sm font-medium mb-1">Explanation</div>
-                        <div className="text-sm text-gray-600">{question.explanation}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
         
-        <div>
-          <div className="bg-white rounded-lg shadow p-5 mb-6">
-            <h2 className="text-lg font-medium mb-4">Performance Summary</h2>
-            
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between items-center text-sm mb-1">
-                  <span>Accuracy</span>
-                  <span className="font-medium">{accuracy}%</span>
+        <Card className="bg-gray-50">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center">
+              <Clock className="mr-2 h-5 w-5 text-brand-purple" />
+              Time Analysis
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-center py-4">
+              <div className="text-3xl font-bold">{testResult.timeTaken}</div>
+              <p className="mt-2 text-gray-600">Total time taken</p>
+              <div className="mt-4 text-xl font-medium">{Math.round(
+                parseInt(testResult.timeTaken.split(':')[0]) * 60 + 
+                parseInt(testResult.timeTaken.split(':')[1]) / testResult.totalQuestions
+              )}s</div>
+              <p className="text-gray-600">Average time per question</p>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-gray-50">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center">
+              <Target className="mr-2 h-5 w-5 text-brand-purple" />
+              Accuracy
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-center py-4">
+              <div className="text-3xl font-bold">{testResult.score}%</div>
+              <p className="mt-2 text-gray-600">Overall accuracy</p>
+              <div className="mt-4">
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm text-green-600">{testResult.correctAnswers} Correct</span>
+                  <span className="text-sm text-red-600">{testResult.incorrectAnswers} Incorrect</span>
                 </div>
-                <Progress value={accuracy} className="h-2" />
-              </div>
-              
-              <div>
-                <div className="flex justify-between items-center text-sm mb-1">
-                  <span>Speed</span>
-                  <span className="font-medium">
-                    {result.timeSpent.includes("minutes") ? "Average" : "Fast"}
-                  </span>
+                <div className="flex h-2 overflow-hidden rounded bg-gray-200">
+                  <div 
+                    className="bg-green-500" 
+                    style={{ width: `${(testResult.correctAnswers/testResult.totalQuestions)*100}%` }}
+                  ></div>
+                  <div 
+                    className="bg-red-500" 
+                    style={{ width: `${(testResult.incorrectAnswers/testResult.totalQuestions)*100}%` }}
+                  ></div>
                 </div>
-                <Progress 
-                  value={result.timeSpent.includes("minutes") ? 70 : 90} 
-                  className="h-2" 
-                />
-              </div>
-              
-              <div className="pt-4 border-t">
-                <div className="flex items-center mb-2">
-                  <Trophy className="h-5 w-5 text-yellow-500 mr-2" />
-                  <span className="font-medium">
-                    {result.score > result.classAverage ? "Above Average" : "Below Average"}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-600">
-                  {result.score > result.classAverage 
-                    ? `You scored ${result.score - result.classAverage}% higher than the class average.`
-                    : `You scored ${result.classAverage - result.score}% lower than the class average.`
-                  }
-                </p>
               </div>
             </div>
+          </CardContent>
+        </Card>
+      </div>
+      
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="text-lg">Areas for Improvement</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {testResult.improvement.map((item, i) => (
+              <div key={i} className="border rounded-lg p-4">
+                <h3 className="font-medium mb-2">{item.topic}</h3>
+                <p className="text-sm text-gray-600 mb-3">{item.recommendation}</p>
+                <div className="flex justify-end">
+                  <Button 
+                    asChild
+                    variant="outline"
+                    className="text-brand-purple"
+                  >
+                    <Link to={`/practice`}>
+                      Practice {item.topic}
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Question Review</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-6">
+            {testResult.questionsData.map((question, index) => (
+              <QuizQuestion 
+                key={index}
+                question={question}
+                onAnswer={() => {}}
+                showExplanation={true}
+              />
+            ))}
           </div>
           
-          <div className="bg-white rounded-lg shadow p-5">
-            <h2 className="text-lg font-medium mb-4">Recommendations</h2>
-            
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <BookOpen className="h-5 w-5 text-brand-purple mr-2 mt-0.5" />
-                <div>
-                  <div className="font-medium text-sm">Practice Similar Questions</div>
-                  <Link 
-                    to={`/practice/${result.subject.toLowerCase()}`} 
-                    className="text-sm text-brand-purple hover:underline flex items-center mt-1"
-                  >
-                    Start Practice
-                    <ArrowRight className="ml-1 h-4 w-4" />
-                  </Link>
-                </div>
-              </li>
-              <li className="flex items-start">
-                <BookOpen className="h-5 w-5 text-brand-purple mr-2 mt-0.5" />
-                <div>
-                  <div className="font-medium text-sm">Take Another Test</div>
-                  <Link 
-                    to={`/tests`} 
-                    className="text-sm text-brand-purple hover:underline flex items-center mt-1"
-                  >
-                    Browse Tests
-                    <ArrowRight className="ml-1 h-4 w-4" />
-                  </Link>
-                </div>
-              </li>
-            </ul>
+          <div className="mt-8 flex justify-center gap-4">
+            <Button 
+              variant="outline"
+              asChild
+            >
+              <Link to={returnPath}>
+                Back to {itemType}s
+              </Link>
+            </Button>
+            <Button 
+              className="bg-brand-purple hover:bg-purple-700"
+              asChild
+            >
+              <Link to={`/subjects/${testResult.subject.toLowerCase()}`}>
+                View Subject Details
+              </Link>
+            </Button>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </PageContainer>
   );
 };
