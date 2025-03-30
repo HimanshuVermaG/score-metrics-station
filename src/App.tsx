@@ -24,6 +24,7 @@ import PracticePage from "./pages/PracticePage";
 import Grades from "./pages/Grades";
 import Assignments from "./pages/Assignments";
 import AssignmentDetail from "./pages/AssignmentDetail";
+import SubjectQuestionsPage from "./pages/SubjectQuestionsPage";
 
 // Properly wrap the application with providers
 const App = () => {
@@ -43,6 +44,7 @@ const App = () => {
             <Route path="/quizzes/start/:quizId" element={<QuizPage />} />
             <Route path="/quizzes/review/:testId" element={<TestResult />} />
             <Route path="/practice" element={<Practice />} />
+            <Route path="/practice/:subject" element={<SubjectQuestionsPage />} />
             <Route path="/practice/:subject/:topicId" element={<PracticePage />} />
             <Route path="/report" element={<Report />} />
             <Route path="/subjects/:subjectId" element={<SubjectDetail />} />

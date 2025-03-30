@@ -18,6 +18,14 @@ const QuestionSetCard: React.FC<QuestionSetCardProps> = ({
   bgColor = 'bg-white',
   viewLink = '#',
 }) => {
+  const getSubjectSlug = (subject: string) => {
+    if (subject === 'G.S.') return 'gs';
+    return subject.toLowerCase();
+  };
+
+  // If viewLink is the default '#', generate a link to the subject page
+  const actualLink = viewLink === '#' ? `/practice/${getSubjectSlug(subject)}` : viewLink;
+
   return (
     <div className={`rounded-lg shadow p-4 ${bgColor} hover:shadow-md transition-shadow`}>
       <div className="flex justify-between items-start mb-4">
@@ -31,7 +39,7 @@ const QuestionSetCard: React.FC<QuestionSetCardProps> = ({
         
         <div className="flex justify-end mt-4">
           <Link 
-            to={viewLink} 
+            to={actualLink} 
             className="flex items-center text-sm text-gray-600 hover:text-brand-purple"
           >
             View
