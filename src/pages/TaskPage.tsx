@@ -254,9 +254,12 @@ const TaskPage = () => {
                     >
                       <div className="flex items-center">
                         <div className="mr-3 text-brand-purple">
-                          {link.url.includes('quiz') ? <Play className="h-4 w-4" /> : 
-                           link.url.includes('practice') ? <Award className="h-4 w-4" /> : 
-                           <BookOpen className="h-4 w-4" />}
+                          {/* Use the correct Lucide icons that are available */}
+                          {link.url.includes('quiz') ? 
+                            <CalendarClock className="h-4 w-4" /> : 
+                           link.url.includes('practice') ? 
+                            <CheckCircle className="h-4 w-4" /> : 
+                            <Clock className="h-4 w-4" />}
                         </div>
                         <span className="text-brand-purple">{link.title}</span>
                       </div>

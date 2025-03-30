@@ -17,6 +17,7 @@ import TasksPage from "./pages/TasksPage";
 import TestPage from "./pages/TestPage";
 import QuizPage from "./pages/QuizPage";
 import PracticePage from "./pages/PracticePage";
+import TaskPage from "./pages/TaskPage";
 
 const queryClient = new QueryClient();
 
