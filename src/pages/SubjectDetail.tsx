@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import PageContainer from '@/components/layout/PageContainer';
@@ -5,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { getTestQuestions } from '@/data/questions';
+import { getTestQuestions } from '@/data/questionSets';
 import QuizQuestion from '@/components/quiz/QuizQuestion';
 import { ArrowRight, Book, Clock, Award, TrendingUp, BarChart2 } from 'lucide-react';
 

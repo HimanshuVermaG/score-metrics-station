@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Question } from '@/data/questions';
+import { Question } from '@/data/questionTypes';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';

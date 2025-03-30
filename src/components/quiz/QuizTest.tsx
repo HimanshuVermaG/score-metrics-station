@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Question } from '@/data/questions';
+import { Question } from '@/data/questionTypes';
 import QuizQuestion from './QuizQuestion';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';

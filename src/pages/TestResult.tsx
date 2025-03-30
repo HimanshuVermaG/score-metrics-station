@@ -5,7 +5,7 @@ import PageContainer from '@/components/layout/PageContainer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { getTestQuestions } from '@/data/questions';
+import { getTestQuestions } from '@/data/questionSets';
 import QuizQuestion from '@/components/quiz/QuizQuestion';
 import { Clock, Award, Target, ArrowLeft } from 'lucide-react';
 
