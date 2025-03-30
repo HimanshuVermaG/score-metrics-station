@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import SubjectDetail from "./pages/SubjectDetail";
 import SubjectImprovement from "./pages/SubjectImprovement";
 import SubjectProgress from "./pages/SubjectProgress";
+import SubjectProgressDetail from "./pages/SubjectProgressDetail";
 import TestResult from "./pages/TestResult";
 import TasksPage from "./pages/TasksPage";
 import TaskPage from "./pages/TaskPage";
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/subjects/:subjectId" element={<SubjectDetail />} />
           <Route path="/subjects/:subjectId/improve" element={<SubjectImprovement />} />
           <Route path="/subject-progress/:subjectId" element={<SubjectProgress />} />
+          <Route path="/subject-progress/:subjectId/detail" element={<SubjectProgressDetail />} />
           <Route path="/grades" element={<Grades />} />
           <Route path="/tasks" element={<TasksPage />} />
           <Route path="/tasks/:taskId" element={<TaskPage />} />

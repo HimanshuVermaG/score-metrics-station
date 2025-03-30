@@ -1,10 +1,15 @@
 
 import React from 'react';
 import PageContainer from '@/components/layout/PageContainer';
+import { Card, CardContent } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import PerformanceOverview from '@/components/report/PerformanceOverview';
 import SubjectPerformance from '@/components/report/SubjectPerformance';
 import WeakAreas from '@/components/report/WeakAreas';
 import ClassRanking from '@/components/report/ClassRanking';
 import TestHistory from '@/components/report/TestHistory';
+import { DownloadIcon, PrinterIcon, Share2Icon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const Report = () => {
   const subjects = [
@@ -121,27 +126,88 @@ const Report = () => {
 
   return (
     <PageContainer>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold">My Academic Report</h1>
-        <p className="text-gray-500">A comprehensive view of your academic performance</p>
+      <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-6">
+        <div>
+          <h1 className="text-2xl font-bold">Academic Report Dashboard</h1>
+          <p className="text-gray-500">A comprehensive analysis of your academic performance</p>
+        </div>
+        <div className="flex space-x-2">
+          <Button variant="outline" size="sm" className="flex items-center gap-2">
+            <PrinterIcon className="h-4 w-4" />
+            <span className="hidden sm:inline">Print</span>
+          </Button>
+          <Button variant="outline" size="sm" className="flex items-center gap-2">
+            <DownloadIcon className="h-4 w-4" />
+            <span className="hidden sm:inline">Export</span>
+          </Button>
+          <Button variant="outline" size="sm" className="flex items-center gap-2">
+            <Share2Icon className="h-4 w-4" />
+            <span className="hidden sm:inline">Share</span>
+          </Button>
+        </div>
       </div>
 
-      <SubjectPerformance subjects={subjects} />
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <WeakAreas weakAreas={weakAreas} />
+      <Tabs defaultValue="overview" className="mb-6">
+        <TabsList className="mb-4">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="subjects">Subject Performance</TabsTrigger>
+          <TabsTrigger value="tests">Test History</TabsTrigger>
+          <TabsTrigger value="improvements">Improvements</TabsTrigger>
+        </TabsList>
         
-        <ClassRanking
-          studentName="Student"
-          currentRank={5}
-          totalStudents={30}
-          previousRank={8}
-          topSubject="Math"
-          topSubjectRank={3}
-        />
-      </div>
-      
-      <TestHistory recentTests={recentTests} />
+        <TabsContent value="overview">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <PerformanceOverview subjects={subjects} />
+            <ClassRanking
+              studentName="Student"
+              currentRank={5}
+              totalStudents={30}
+              previousRank={8}
+              topSubject="Math"
+              topSubjectRank={3}
+            />
+          </div>
+          <SubjectPerformance subjects={subjects} />
+        </TabsContent>
+        
+        <TabsContent value="subjects">
+          <Card>
+            <CardContent className="pt-6">
+              <SubjectPerformance subjects={subjects} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="tests">
+          <TestHistory recentTests={recentTests} />
+        </TabsContent>
+        
+        <TabsContent value="improvements">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <WeakAreas weakAreas={weakAreas} />
+            <Card>
+              <CardContent className="pt-6">
+                <h2 className="text-xl font-bold mb-4">Recommended Study Plan</h2>
+                <div className="space-y-4">
+                  {weakAreas.map((area) => (
+                    <div key={area.id} className="p-4 rounded-lg border">
+                      <h3 className="font-medium">{area.subject}: {area.topic}</h3>
+                      <p className="text-sm text-gray-500 mt-1 mb-2">Focus on improving your understanding of core concepts</p>
+                      <ul className="space-y-2">
+                        {area.recommendedResources.map((resource, idx) => (
+                          <li key={idx} className="text-sm">
+                            • <a href={resource.link} className="text-brand-purple hover:underline">{resource.title}</a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
     </PageContainer>
   );
 };

@@ -1,6 +1,9 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { BookOpen, ChevronRight } from 'lucide-react';
 
 interface SubjectPerformanceProps {
   subjects: {
@@ -27,57 +30,78 @@ const SubjectPerformance: React.FC<SubjectPerformanceProps> = ({ subjects }) => 
   };
 
   return (
-    <div className="rounded-lg shadow bg-white p-5 mb-6">
-      <h2 className="text-xl font-bold mb-4">Subject Performance</h2>
+    <Card className="shadow-sm hover:shadow-md transition-shadow">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-xl flex items-center gap-2">
+          <BookOpen className="h-5 w-5 text-brand-purple" />
+          Subject Performance
+        </CardTitle>
+      </CardHeader>
       
-      <div className="space-y-6">
-        {subjects.map((subject, index) => (
-          <div key={index}>
-            <div className="flex justify-between items-center mb-2">
-              <div className="flex items-center">
-                <h3 className="font-medium">{subject.name}</h3>
-                {subject.improvement && (
-                  <span className="ml-2">{getImprovementIcon(subject.improvement)}</span>
-                )}
-              </div>
-              <div className="text-sm text-gray-500">
-                {subject.tests} tests completed
-              </div>
-            </div>
-            
-            <div className="flex items-center">
-              <div className={`w-2 h-16 rounded-full ${subject.bgColor} mr-4`}></div>
-              <div className="flex-1">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-sm font-medium">Score</span>
-                  <span className="text-sm font-medium">{subject.score}%</span>
-                </div>
-                <Progress value={subject.score} className="h-2 mb-3" />
-                
-                <div className="grid grid-cols-3 gap-2 mt-2">
-                  <div className="text-center">
-                    <div className="text-sm font-medium">Accuracy</div>
-                    <div className="text-lg">{Math.round(subject.score * 0.9)}%</div>
+      <CardContent>
+        <div className="space-y-6">
+          {subjects.map((subject, index) => (
+            <Link 
+              key={index} 
+              to={`/subject-progress/${subject.name.toLowerCase()}`}
+              className="block"
+            >
+              <div className="rounded-lg border p-4 hover:bg-gray-50 transition-colors">
+                <div className="flex justify-between items-center mb-2">
+                  <div className="flex items-center">
+                    <h3 className="font-medium">{subject.name}</h3>
+                    {subject.improvement && (
+                      <span className="ml-2">{getImprovementIcon(subject.improvement)}</span>
+                    )}
                   </div>
-                  <div className="text-center">
-                    <div className="text-sm font-medium">Speed</div>
-                    <div className="text-lg">
+                  <div className="flex items-center">
+                    <div className="text-sm text-gray-500 mr-2">
+                      {subject.tests} tests
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-gray-400" />
+                  </div>
+                </div>
+                
+                <div className="mb-3">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm font-medium">Score</span>
+                    <span className="text-sm font-medium">{subject.score}%</span>
+                  </div>
+                  <Progress 
+                    value={subject.score} 
+                    className="h-2" 
+                    indicatorClassName={`${
+                      subject.score >= 80 ? 'bg-green-500' : 
+                      subject.score >= 60 ? 'bg-yellow-500' : 
+                      'bg-red-500'
+                    }`}
+                  />
+                </div>
+                
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="text-center p-2 bg-gray-50 rounded">
+                    <div className="text-xs text-gray-500">Accuracy</div>
+                    <div className="font-medium">{Math.round(subject.score * 0.9)}%</div>
+                  </div>
+                  <div className="text-center p-2 bg-gray-50 rounded">
+                    <div className="text-xs text-gray-500">Speed</div>
+                    <div className="font-medium">
                       {Math.round(75 + Math.random() * 20)}%
                     </div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-sm font-medium">Rank</div>
-                    <div className="text-lg">
+                  <div className="text-center p-2 bg-gray-50 rounded">
+                    <div className="text-xs text-gray-500">Rank</div>
+                    <div className="font-medium">
                       {Math.round(1 + Math.random() * 10)}/{30}
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+            </Link>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
