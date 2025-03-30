@@ -18,6 +18,8 @@ import TestPage from "./pages/TestPage";
 import QuizPage from "./pages/QuizPage";
 import PracticePage from "./pages/PracticePage";
 import TaskPage from "./pages/TaskPage";
+import SubjectProgress from "./pages/SubjectProgress";
+import Grades from "./pages/Grades";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +41,8 @@ const App = () => (
           <Route path="/report" element={<Report />} />
           <Route path="/subjects/:subjectId" element={<SubjectDetail />} />
           <Route path="/subjects/:subjectId/improve" element={<SubjectImprovement />} />
+          <Route path="/subject-progress/:subjectId" element={<SubjectProgress />} />
+          <Route path="/grades" element={<Grades />} />
           <Route path="/tasks" element={<TasksPage />} />
           <Route path="/tasks/:taskId" element={<TaskPage />} />
           <Route path="*" element={<NotFound />} />

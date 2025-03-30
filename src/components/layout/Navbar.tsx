@@ -8,8 +8,8 @@ const navItems = [
   { name: 'Tests', path: '/tests' },
   { name: 'Quizzes', path: '/quizzes' },
   { name: 'Practice', path: '/practice' },
-  { name: 'Assignments', path: '/assignments' },
   { name: 'Grades', path: '/grades' },
+  { name: 'Assignments', path: '/assignments' },
   { name: 'Calendar', path: '/calendar' },
 ];
 
@@ -25,7 +25,7 @@ const Navbar = () => {
           </Link>
         </div>
         
-        <nav className="flex items-center space-x-6 mr-auto">
+        <nav className="flex items-center space-x-6 mr-auto overflow-x-auto">
           {navItems.map((item) => (
             <Link
               key={item.name}
