@@ -10,7 +10,7 @@ const navItems = [
   { name: 'Practice', path: '/practice' },
   { name: 'Grades', path: '/grades' },
   { name: 'Assignments', path: '/assignments' },
-  { name: 'Calendar', path: '/calendar' },
+  { name: 'Tasks', path: '/tasks' },
 ];
 
 const Navbar = () => {

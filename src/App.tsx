@@ -12,14 +12,16 @@ import Report from "./pages/Report";
 import NotFound from "./pages/NotFound";
 import SubjectDetail from "./pages/SubjectDetail";
 import SubjectImprovement from "./pages/SubjectImprovement";
+import SubjectProgress from "./pages/SubjectProgress";
 import TestResult from "./pages/TestResult";
 import TasksPage from "./pages/TasksPage";
+import TaskPage from "./pages/TaskPage";
 import TestPage from "./pages/TestPage";
 import QuizPage from "./pages/QuizPage";
 import PracticePage from "./pages/PracticePage";
-import TaskPage from "./pages/TaskPage";
-import SubjectProgress from "./pages/SubjectProgress";
 import Grades from "./pages/Grades";
+import Assignments from "./pages/Assignments";
+import AssignmentDetail from "./pages/AssignmentDetail";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +47,8 @@ const App = () => (
           <Route path="/grades" element={<Grades />} />
           <Route path="/tasks" element={<TasksPage />} />
           <Route path="/tasks/:taskId" element={<TaskPage />} />
+          <Route path="/assignments" element={<Assignments />} />
+          <Route path="/assignments/:assignmentId" element={<AssignmentDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Toaster />
