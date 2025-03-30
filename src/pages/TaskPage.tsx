@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { CalendarClock, ArrowLeft, CheckCircle, Clock } from 'lucide-react';
+import { CalendarClock, ArrowLeft, CheckCircle, Clock, FileText } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 const TaskPage = () => {
@@ -259,7 +259,7 @@ const TaskPage = () => {
                             <CalendarClock className="h-4 w-4" /> : 
                            link.url.includes('practice') ? 
                             <CheckCircle className="h-4 w-4" /> : 
-                            <Clock className="h-4 w-4" />}
+                            <FileText className="h-4 w-4" />}
                         </div>
                         <span className="text-brand-purple">{link.title}</span>
                       </div>

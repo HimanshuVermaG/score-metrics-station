@@ -1,10 +1,12 @@
 
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import PageContainer from '@/components/layout/PageContainer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { quizSets } from '@/data/questionSets';
 
 const Quizzes = () => {
   const upcomingQuizzes = [
@@ -28,40 +30,14 @@ const Quizzes = () => {
     },
   ];
 
-  const availableQuizzes = [
-    {
-      id: 1,
-      subject: 'Math',
-      title: 'Mental Math Challenge',
-      difficulty: 'Easy',
-      totalQuestions: 10,
-      estimatedTime: '10 min',
-    },
-    {
-      id: 2,
-      subject: 'G.S.',
-      title: 'World Geography Quiz',
-      difficulty: 'Medium',
-      totalQuestions: 15,
-      estimatedTime: '15 min',
-    },
-    {
-      id: 3,
-      subject: 'Hindi',
-      title: 'Hindi Grammar Quiz',
-      difficulty: 'Medium',
-      totalQuestions: 12,
-      estimatedTime: '12 min',
-    },
-    {
-      id: 4,
-      subject: 'English',
-      title: 'Spelling Bee',
-      difficulty: 'Hard',
-      totalQuestions: 20,
-      estimatedTime: '20 min',
-    },
-  ];
+  const availableQuizzes = quizSets.map((quiz, index) => ({
+    id: quiz.id,
+    subject: quiz.subject,
+    title: quiz.title,
+    difficulty: quiz.difficulty || 'Medium',
+    totalQuestions: quiz.totalQuestions || quiz.questions.length,
+    estimatedTime: quiz.estimatedTime || '15 min',
+  }));
 
   const completedQuizzes = [
     {
@@ -134,7 +110,7 @@ const Quizzes = () => {
                   asChild 
                   className="w-full bg-brand-purple hover:bg-purple-700"
                 >
-                  <a href={`/quizzes/start/${quiz.id}`}>Start Quiz</a>
+                  <Link to={`/quizzes/start/${quiz.id}`}>Start Quiz</Link>
                 </Button>
               </div>
             ))}
@@ -168,7 +144,7 @@ const Quizzes = () => {
                         size="sm" 
                         asChild
                       >
-                        <a href={`/quizzes/prepare/${quiz.id}`}>Prepare</a>
+                        <Link to={`/quizzes/prepare/${quiz.id}`}>Prepare</Link>
                       </Button>
                     </div>
                   </div>
@@ -207,13 +183,13 @@ const Quizzes = () => {
                             className="h-2 w-16" 
                           />
                         </div>
-                        <a 
-                          href={`/quizzes/review/${quiz.id}`}
+                        <Link 
+                          to={`/quizzes/review/${quiz.id}`}
                           className="text-sm text-brand-purple hover:underline flex items-center"
                         >
                           Review
                           <ArrowRight className="ml-1 h-4 w-4" />
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>

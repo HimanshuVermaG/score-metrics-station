@@ -5,37 +5,15 @@ import PageContainer from '@/components/layout/PageContainer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import QuizQuestion from '@/components/quiz/QuizQuestion';
-import { getTestQuestions } from '@/data/questions';
+import { getTestQuestions } from '@/data/questionSets';
 import { ArrowLeft, Lightbulb, BookOpen } from 'lucide-react';
+import { subjectTopics } from '@/data/questionSets';
 
 const PracticePage = () => {
   const { subject, topicId } = useParams<{ subject: string; topicId: string }>();
   
-  // Practice data mapping
-  const practiceData = {
-    'math': {
-      '1': { title: 'Number Theory', description: 'Practice number theory concepts including factors, multiples, and prime numbers.', subject: 'Math' },
-      '2': { title: 'Algebraic Equations', description: 'Practice solving linear and quadratic equations.', subject: 'Math' },
-      '3': { title: 'Geometry Basics', description: 'Practice fundamental geometry concepts.', subject: 'Math' }
-    },
-    'english': {
-      '1': { title: 'Grammar Rules', description: 'Practice essential grammar rules and sentence structure.', subject: 'English' },
-      '2': { title: 'Vocabulary Building', description: 'Expand your vocabulary with these practice exercises.', subject: 'English' },
-      '3': { title: 'Reading Comprehension', description: 'Improve your reading comprehension skills.', subject: 'English' }
-    },
-    'hindi': {
-      '1': { title: 'Hindi Grammar', description: 'Practice Hindi grammar rules and sentence structure.', subject: 'Hindi' },
-      '2': { title: 'Comprehension Practice', description: 'Improve your Hindi reading comprehension skills.', subject: 'Hindi' }
-    },
-    'gs': {
-      '1': { title: 'Indian History', description: 'Practice questions related to Indian history.', subject: 'G.S.' },
-      '2': { title: 'World Geography', description: 'Test your knowledge of world geography.', subject: 'G.S.' },
-      '3': { title: 'Current Affairs', description: 'Stay updated with current affairs practice questions.', subject: 'G.S.' }
-    }
-  };
-  
   // Find the topic data
-  const topicData = subject && topicId ? (practiceData as any)[subject]?.[topicId] : null;
+  const topicData = subject && topicId ? (subjectTopics as any)[subject]?.[topicId] : null;
   
   if (!topicData) {
     return (

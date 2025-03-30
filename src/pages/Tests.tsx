@@ -1,9 +1,11 @@
 
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import PageContainer from '@/components/layout/PageContainer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
+import { testSets } from '@/data/questionSets';
 
 const Tests = () => {
   const upcomingTests = [
@@ -36,26 +38,15 @@ const Tests = () => {
     },
   ];
 
-  const ongoingTests = [
-    {
-      id: 1,
-      subject: 'Math',
-      title: 'Geometry Basics',
-      dueDate: 'May 22, 2023',
-      progress: 40,
-      totalQuestions: 15,
-      completedQuestions: 6,
-    },
-    {
-      id: 2,
-      subject: 'G.S.',
-      title: 'Indian History',
-      dueDate: 'May 23, 2023',
-      progress: 75,
-      totalQuestions: 20,
-      completedQuestions: 15,
-    },
-  ];
+  const ongoingTests = testSets.map((test, index) => ({
+    id: test.id,
+    subject: test.subject,
+    title: test.title,
+    dueDate: `May ${22 + index}, 2023`,
+    progress: Math.floor(Math.random() * 70) + 10, // Random progress between 10-80%
+    totalQuestions: test.totalQuestions || test.questions.length,
+    completedQuestions: Math.floor((test.totalQuestions || test.questions.length) * (Math.floor(Math.random() * 70) + 10) / 100),
+  }));
 
   const completedTests = [
     {
@@ -132,13 +123,13 @@ const Tests = () => {
                           {test.date} at {test.time} • {test.duration} • {test.totalQuestions} questions
                         </p>
                       </div>
-                      <a 
-                        href={`/tests/prepare/${test.id}`}
+                      <Link 
+                        to={`/tests/prepare/${test.id}`}
                         className="text-sm text-brand-purple hover:underline flex items-center"
                       >
                         Prepare
                         <ArrowRight className="ml-1 h-4 w-4" />
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 ))}
@@ -169,13 +160,13 @@ const Tests = () => {
                           Due: {test.dueDate} • {test.completedQuestions}/{test.totalQuestions} completed
                         </p>
                       </div>
-                      <a 
-                        href={`/tests/continue/${test.id}`}
+                      <Link 
+                        to={`/tests/start/${test.id}`}
                         className="text-sm text-brand-purple hover:underline flex items-center"
                       >
                         Continue
                         <ArrowRight className="ml-1 h-4 w-4" />
-                      </a>
+                      </Link>
                     </div>
                     <Progress value={test.progress} className="h-1.5" />
                   </div>
@@ -207,13 +198,13 @@ const Tests = () => {
                           {test.date} • Score: {test.score}% • {test.correctAnswers}/{test.totalQuestions} correct
                         </p>
                       </div>
-                      <a 
-                        href={`/tests/review/${test.id}`}
+                      <Link 
+                        to={`/tests/review/${test.id}`}
                         className="text-sm text-brand-purple hover:underline flex items-center"
                       >
                         Review
                         <ArrowRight className="ml-1 h-4 w-4" />
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 ))}
