@@ -36,6 +36,9 @@ import SubjectQuestionsPage from "./pages/SubjectQuestionsPage";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import TeacherReports from "./pages/TeacherReports";
 import TeacherClass6 from "./pages/TeacherClass6";
+import TeacherClass7 from "./pages/TeacherClass7";
+import TeacherClass8 from "./pages/TeacherClass8";
+import TeacherActiveContent from "./pages/TeacherActiveContent";
 import TeacherCreateContent from "./pages/TeacherCreateContent";
 import TeacherStudents from "./pages/TeacherStudents";
 
@@ -82,8 +85,11 @@ const App = () => {
                 <Route path="/teacher" element={<TeacherDashboard />} />
                 <Route path="/teacher/reports" element={<TeacherReports />} />
                 <Route path="/teacher/create" element={<TeacherCreateContent />} />
+                <Route path="/teacher/active-content" element={<TeacherActiveContent />} />
                 <Route path="/teacher/students" element={<TeacherStudents />} />
                 <Route path="/teacher/class/6" element={<TeacherClass6 />} />
+                <Route path="/teacher/class/7" element={<TeacherClass7 />} />
+                <Route path="/teacher/class/8" element={<TeacherClass8 />} />
               </Route>
               
               {/* 404 route */}

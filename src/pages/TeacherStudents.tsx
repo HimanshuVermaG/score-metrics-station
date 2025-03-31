@@ -1,443 +1,525 @@
 
 import React, { useState } from 'react';
 import TeacherPageContainer from '@/components/layout/TeacherPageContainer';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, Filter, Download, Mail, UserPlus, MoreHorizontal, Eye, Edit, Trash, ArrowUpDown } from 'lucide-react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
-import { toast } from 'sonner';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { 
+  Users, User, Search, PlusCircle, Download, Filter, UploadCloud,
+  ArrowUp, ArrowDown, Minus, Mail, BarChart, FileText, MoreHorizontal
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { DataTable } from '@/components/ui/data-table';
 
 // Mock data for students
-const studentsData = [
-  { id: 1, name: "Aakash Singh", class: "Class 6", rollNo: "C6-001", email: "aakash.s@example.com", parentName: "Rajesh Singh", phone: "9876543210", joinDate: "15 Apr 2023", status: "active", performance: "excellent" },
-  { id: 2, name: "Nisha Sharma", class: "Class 6", rollNo: "C6-002", email: "nisha.s@example.com", parentName: "Vijay Sharma", phone: "9876543211", joinDate: "18 Apr 2023", status: "active", performance: "good" },
-  { id: 3, name: "Rahul Patel", class: "Class 6", rollNo: "C6-003", email: "rahul.p@example.com", parentName: "Sunil Patel", phone: "9876543212", joinDate: "20 Apr 2023", status: "inactive", performance: "average" },
-  { id: 4, name: "Priya Gupta", class: "Class 7", rollNo: "C7-001", email: "priya.g@example.com", parentName: "Amit Gupta", phone: "9876543213", joinDate: "10 Mar 2023", status: "active", performance: "good" },
-  { id: 5, name: "Vikram Yadav", class: "Class 7", rollNo: "C7-002", email: "vikram.y@example.com", parentName: "Rakesh Yadav", phone: "9876543214", joinDate: "12 Mar 2023", status: "active", performance: "average" },
-  { id: 6, name: "Shreya Verma", class: "Class 7", rollNo: "C7-003", email: "shreya.v@example.com", parentName: "Deepak Verma", phone: "9876543215", joinDate: "15 Mar 2023", status: "active", performance: "excellent" },
-  { id: 7, name: "Arjun Malhotra", class: "Class 8", rollNo: "C8-001", email: "arjun.m@example.com", parentName: "Vikrant Malhotra", phone: "9876543216", joinDate: "5 Feb 2023", status: "active", performance: "good" },
-  { id: 8, name: "Divya Kapoor", class: "Class 8", rollNo: "C8-002", email: "divya.k@example.com", parentName: "Rajiv Kapoor", phone: "9876543217", joinDate: "8 Feb 2023", status: "inactive", performance: "needs_improvement" },
-  { id: 9, name: "Kunal Joshi", class: "Class 8", rollNo: "C8-003", email: "kunal.j@example.com", parentName: "Sanjeev Joshi", phone: "9876543218", joinDate: "10 Feb 2023", status: "active", performance: "average" },
+const allStudents = [
+  { id: 1, name: 'Aakash Sharma', class: 'Class 6', avgScore: 82, attendance: 92, lastActive: '2 hours ago', status: 'active' },
+  { id: 2, name: 'Bhavya Patel', class: 'Class 6', avgScore: 78, attendance: 88, lastActive: '1 day ago', status: 'inactive' },
+  { id: 3, name: 'Charu Gupta', class: 'Class 6', avgScore: 90, attendance: 95, lastActive: '5 hours ago', status: 'active' },
+  { id: 4, name: 'Dhruv Singh', class: 'Class 6', avgScore: 75, attendance: 80, lastActive: '3 days ago', status: 'inactive' },
+  { id: 5, name: 'Priya Sharma', class: 'Class 7', avgScore: 95, attendance: 94, lastActive: '1 hour ago', status: 'active' },
+  { id: 6, name: 'Rajesh Verma', class: 'Class 7', avgScore: 65, attendance: 78, lastActive: '2 days ago', status: 'inactive' },
+  { id: 7, name: 'Vikram Mehta', class: 'Class 7', avgScore: 90, attendance: 92, lastActive: '4 hours ago', status: 'active' },
+  { id: 8, name: 'Gitanjali Roy', class: 'Class 7', avgScore: 72, attendance: 82, lastActive: '1 day ago', status: 'inactive' },
+  { id: 9, name: 'Ananya Joshi', class: 'Class 8', avgScore: 88, attendance: 94, lastActive: '1 hour ago', status: 'active' },
+  { id: 10, name: 'Rahul Singh', class: 'Class 8', avgScore: 92, attendance: 91, lastActive: '3 hours ago', status: 'active' },
+  { id: 11, name: 'Arjun Kumar', class: 'Class 8', avgScore: 58, attendance: 75, lastActive: '2 days ago', status: 'inactive' },
+  { id: 12, name: 'Gauri Mishra', class: 'Class 8', avgScore: 90, attendance: 95, lastActive: '4 hours ago', status: 'active' },
+];
+
+// Mock data for student performance reports
+const studentReports = [
+  { 
+    id: 1, 
+    name: 'Priya Sharma', 
+    class: 'Class 7',
+    latestTest: 'Mathematics - Algebra', 
+    latestScore: 92,
+    avgScore: 95,
+    improvement: 3.5,
+    strengths: ['Algebra', 'Geometry'],
+    weaknesses: ['Statistics'],
+    lastUpdated: '2 days ago'
+  },
+  { 
+    id: 5, 
+    name: 'Rahul Singh', 
+    class: 'Class 8',
+    latestTest: 'Science - Physics', 
+    latestScore: 88,
+    avgScore: 92,
+    improvement: 2.1,
+    strengths: ['Physics', 'Chemistry'],
+    weaknesses: ['Biology'],
+    lastUpdated: '3 days ago'
+  },
+  { 
+    id: 3, 
+    name: 'Charu Gupta', 
+    class: 'Class 6',
+    latestTest: 'English - Grammar', 
+    latestScore: 95,
+    avgScore: 90,
+    improvement: 5.0,
+    strengths: ['Grammar', 'Vocabulary'],
+    weaknesses: ['Comprehension'],
+    lastUpdated: '1 week ago'
+  },
+  { 
+    id: 10, 
+    name: 'Vikram Mehta', 
+    class: 'Class 7',
+    latestTest: 'Social Studies - History', 
+    latestScore: 85,
+    avgScore: 90,
+    improvement: -2.5,
+    strengths: ['History', 'Geography'],
+    weaknesses: ['Civics'],
+    lastUpdated: '5 days ago'
+  },
+  { 
+    id: 9, 
+    name: 'Ananya Joshi', 
+    class: 'Class 8',
+    latestTest: 'Hindi - Literature', 
+    latestScore: 90,
+    avgScore: 88,
+    improvement: 1.8,
+    strengths: ['Poetry', 'Prose'],
+    weaknesses: ['Grammar'],
+    lastUpdated: '1 week ago'
+  },
 ];
 
 const TeacherStudents = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedClass, setSelectedClass] = useState("all");
-  const [selectedStatus, setSelectedStatus] = useState("all");
-  const [showAddStudentDialog, setShowAddStudentDialog] = useState(false);
-  const [sortColumn, setSortColumn] = useState("");
-  const [sortDirection, setSortDirection] = useState("asc");
+  const [classFilter, setClassFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
   
-  // Form state for new student
-  const [newStudent, setNewStudent] = useState({
-    name: "",
-    class: "",
-    rollNo: "",
-    email: "",
-    parentName: "",
-    phone: "",
+  // Filter students based on filters
+  const filteredStudents = allStudents.filter(student => {
+    const classMatch = classFilter === 'all' || student.class === `Class ${classFilter}`;
+    const statusMatch = statusFilter === 'all' || student.status === statusFilter;
+    const searchMatch = !searchQuery || 
+      student.name.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    return classMatch && statusMatch && searchMatch;
   });
   
-  // Function to handle sort
-  const handleSort = (column: string) => {
-    if (sortColumn === column) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+  // Calculate stats
+  const totalStudents = allStudents.length;
+  const activeStudents = allStudents.filter(s => s.status === 'active').length;
+  const inactiveStudents = allStudents.filter(s => s.status === 'inactive').length;
+  
+  // Class distribution
+  const class6Count = allStudents.filter(s => s.class === 'Class 6').length;
+  const class7Count = allStudents.filter(s => s.class === 'Class 7').length;
+  const class8Count = allStudents.filter(s => s.class === 'Class 8').length;
+  
+  // Function to get status badge color
+  const getStatusBadge = (status: string) => {
+    return status === 'active' 
+      ? <Badge className="bg-green-500">Active</Badge>
+      : <Badge className="bg-gray-500">Inactive</Badge>;
+  };
+  
+  // Function to get score color
+  const getScoreColor = (score: number) => {
+    if (score >= 85) return 'text-green-600';
+    if (score >= 70) return 'text-amber-600';
+    return 'text-red-600';
+  };
+  
+  // Function to get improvement trend icon and color
+  const getImprovementTrend = (value: number) => {
+    if (value > 0) {
+      return { icon: <ArrowUp className="h-4 w-4 text-green-500" />, color: 'text-green-500' };
+    } else if (value < 0) {
+      return { icon: <ArrowDown className="h-4 w-4 text-red-500" />, color: 'text-red-500' };
     } else {
-      setSortColumn(column);
-      setSortDirection("asc");
+      return { icon: <Minus className="h-4 w-4 text-gray-500" />, color: 'text-gray-500' };
     }
   };
   
-  // Filter and sort students based on search, class, status, and sort column
-  const filteredStudents = studentsData
-    .filter(student => 
-      (selectedClass === "all" || student.class === selectedClass) &&
-      (selectedStatus === "all" || student.status === selectedStatus) &&
-      (student.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-       student.rollNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       student.email.toLowerCase().includes(searchTerm.toLowerCase()))
-    )
-    .sort((a, b) => {
-      if (!sortColumn) return 0;
-      
-      const aValue = a[sortColumn as keyof typeof a];
-      const bValue = b[sortColumn as keyof typeof b];
-      
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        return sortDirection === "asc" 
-          ? aValue.localeCompare(bValue) 
-          : bValue.localeCompare(aValue);
+  // Columns for student table
+  const studentColumns = [
+    {
+      id: 'name',
+      header: 'Student Name',
+      cell: (student: typeof allStudents[0]) => (
+        <div className="flex items-center">
+          <div className="h-8 w-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-medium text-sm mr-3">
+            {student.name.split(' ').map(n => n[0]).join('')}
+          </div>
+          <Link to={`/teacher/students/${student.id}`} className="font-medium text-indigo-600 hover:underline">
+            {student.name}
+          </Link>
+        </div>
+      )
+    },
+    {
+      id: 'class',
+      header: 'Class',
+      cell: (student: typeof allStudents[0]) => student.class
+    },
+    {
+      id: 'score',
+      header: 'Avg. Score',
+      cell: (student: typeof allStudents[0]) => (
+        <span className={getScoreColor(student.avgScore)}>{student.avgScore}%</span>
+      )
+    },
+    {
+      id: 'attendance',
+      header: 'Attendance',
+      cell: (student: typeof allStudents[0]) => (
+        <span className={
+          student.attendance >= 90 ? 'text-green-600' :
+          student.attendance >= 80 ? 'text-amber-600' :
+          'text-red-600'
+        }>
+          {student.attendance}%
+        </span>
+      )
+    },
+    {
+      id: 'lastActive',
+      header: 'Last Active',
+      cell: (student: typeof allStudents[0]) => (
+        <span className="text-gray-500">{student.lastActive}</span>
+      )
+    },
+    {
+      id: 'status',
+      header: 'Status',
+      cell: (student: typeof allStudents[0]) => getStatusBadge(student.status)
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+      cell: (student: typeof allStudents[0]) => (
+        <div className="flex items-center space-x-2">
+          <Button 
+            variant="outline" 
+            size="sm"
+            asChild
+          >
+            <Link to={`/teacher/students/${student.id}`}>
+              View
+            </Link>
+          </Button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-40 p-0">
+              <div className="py-1">
+                <Link 
+                  to={`/teacher/students/${student.id}/message`}
+                  className="flex w-full items-center px-3 py-2 text-sm hover:bg-gray-100"
+                >
+                  <Mail className="mr-2 h-4 w-4" />
+                  Message
+                </Link>
+                <Link 
+                  to={`/teacher/students/${student.id}/report`}
+                  className="flex w-full items-center px-3 py-2 text-sm hover:bg-gray-100"
+                >
+                  <BarChart className="mr-2 h-4 w-4" />
+                  Reports
+                </Link>
+                <Link 
+                  to={`/teacher/students/${student.id}/assignments`}
+                  className="flex w-full items-center px-3 py-2 text-sm hover:bg-gray-100"
+                >
+                  <FileText className="mr-2 h-4 w-4" />
+                  Assignments
+                </Link>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
+      )
+    }
+  ];
+  
+  // Columns for report table
+  const reportColumns = [
+    {
+      id: 'name',
+      header: 'Student Name',
+      cell: (report: typeof studentReports[0]) => (
+        <div className="flex items-center">
+          <div className="h-8 w-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-medium text-sm mr-3">
+            {report.name.split(' ').map(n => n[0]).join('')}
+          </div>
+          <div>
+            <Link to={`/teacher/students/${report.id}`} className="font-medium text-indigo-600 hover:underline">
+              {report.name}
+            </Link>
+            <div className="text-xs text-gray-500">{report.class}</div>
+          </div>
+        </div>
+      )
+    },
+    {
+      id: 'lastTest',
+      header: 'Latest Test',
+      cell: (report: typeof studentReports[0]) => (
+        <div>
+          <div className="font-medium">{report.latestTest}</div>
+          <div className={`text-sm ${getScoreColor(report.latestScore)}`}>
+            {report.latestScore}%
+          </div>
+        </div>
+      )
+    },
+    {
+      id: 'average',
+      header: 'Average',
+      cell: (report: typeof studentReports[0]) => (
+        <span className={getScoreColor(report.avgScore)}>{report.avgScore}%</span>
+      )
+    },
+    {
+      id: 'improvement',
+      header: 'Trend',
+      cell: (report: typeof studentReports[0]) => {
+        const { icon, color } = getImprovementTrend(report.improvement);
+        return (
+          <div className="flex items-center">
+            {icon}
+            <span className={`ml-1 ${color}`}>{Math.abs(report.improvement)}%</span>
+          </div>
+        );
       }
-      
-      return 0;
-    });
-  
-  // Function to handle adding a new student
-  const handleAddStudent = () => {
-    // Validate form
-    if (!newStudent.name.trim() || !newStudent.class || !newStudent.rollNo.trim() || 
-        !newStudent.email.trim() || !newStudent.parentName.trim() || !newStudent.phone.trim()) {
-      toast.error("Please fill in all required fields");
-      return;
+    },
+    {
+      id: 'strengths',
+      header: 'Strengths',
+      cell: (report: typeof studentReports[0]) => (
+        <div className="flex flex-wrap gap-1">
+          {report.strengths.map((strength, idx) => (
+            <Badge key={idx} variant="outline" className="bg-green-50 text-green-700 border-green-200">
+              {strength}
+            </Badge>
+          ))}
+        </div>
+      )
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+      cell: (report: typeof studentReports[0]) => (
+        <Button 
+          variant="outline" 
+          size="sm"
+          asChild
+        >
+          <Link to={`/teacher/students/${report.id}/report`}>
+            Full Report
+          </Link>
+        </Button>
+      )
     }
-    
-    // Add student logic would go here (connect to backend)
-    toast.success("Student added successfully!");
-    setShowAddStudentDialog(false);
-    
-    // Reset form
-    setNewStudent({
-      name: "",
-      class: "",
-      rollNo: "",
-      email: "",
-      parentName: "",
-      phone: "",
-    });
-  };
-  
-  // Function to handle input change for new student form
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewStudent({ ...newStudent, [name]: value });
-  };
-  
-  // Function to handle select change for new student form
-  const handleSelectChange = (name: string, value: string) => {
-    setNewStudent({ ...newStudent, [name]: value });
-  };
-  
-  // Function to get performance badge color
-  const getPerformanceBadge = (performance: string) => {
-    switch (performance) {
-      case 'excellent':
-        return <Badge className="bg-green-100 text-green-800">Excellent</Badge>;
-      case 'good':
-        return <Badge className="bg-blue-100 text-blue-800">Good</Badge>;
-      case 'average':
-        return <Badge className="bg-yellow-100 text-yellow-800">Average</Badge>;
-      case 'needs_improvement':
-        return <Badge className="bg-red-100 text-red-800">Needs Improvement</Badge>;
-      default:
-        return null;
-    }
-  };
-  
+  ];
+
   return (
     <TeacherPageContainer>
-      <div className="mb-8 flex justify-between items-center">
+      <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Manage Students</h1>
-          <p className="text-gray-600">View, add, and manage all student information</p>
+          <h1 className="text-2xl font-bold mb-1">Manage Students</h1>
+          <p className="text-gray-500">View and manage all student accounts</p>
         </div>
-        <Dialog open={showAddStudentDialog} onOpenChange={setShowAddStudentDialog}>
-          <DialogTrigger asChild>
-            <Button className="bg-indigo-600 hover:bg-indigo-700 flex items-center gap-2">
-              <UserPlus className="h-4 w-4" />
-              Add Student
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[500px]">
-            <DialogHeader>
-              <DialogTitle>Add New Student</DialogTitle>
-              <DialogDescription>Enter student details to add them to the system.</DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Student Name</Label>
+        <div className="flex gap-3">
+          <Button 
+            variant="outline" 
+            className="flex items-center gap-2"
+          >
+            <UploadCloud className="h-4 w-4" />
+            Import
+          </Button>
+          <Button 
+            className="bg-indigo-600 hover:bg-indigo-700 flex items-center gap-2"
+          >
+            <PlusCircle className="h-4 w-4" />
+            Add Student
+          </Button>
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex justify-between items-center mb-2">
+              <div className="flex items-center">
+                <div className="p-2 rounded-full bg-indigo-100 mr-3">
+                  <Users className="h-5 w-5 text-indigo-600" />
+                </div>
+                <span className="font-medium">Total Students</span>
+              </div>
+              <span className="text-2xl font-bold">{totalStudents}</span>
+            </div>
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>All Classes</span>
+              <span>Class 6: {class6Count}, Class 7: {class7Count}, Class 8: {class8Count}</span>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex justify-between items-center mb-2">
+              <div className="flex items-center">
+                <div className="p-2 rounded-full bg-green-100 mr-3">
+                  <User className="h-5 w-5 text-green-600" />
+                </div>
+                <span className="font-medium">Active Students</span>
+              </div>
+              <span className="text-2xl font-bold">{activeStudents}</span>
+            </div>
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>Last 7 days</span>
+              <span>{Math.round((activeStudents/totalStudents)*100)}% of total</span>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex justify-between items-center mb-2">
+              <div className="flex items-center">
+                <div className="p-2 rounded-full bg-amber-100 mr-3">
+                  <User className="h-5 w-5 text-amber-600" />
+                </div>
+                <span className="font-medium">Inactive Students</span>
+              </div>
+              <span className="text-2xl font-bold">{inactiveStudents}</span>
+            </div>
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>Not active in 3+ days</span>
+              <span>{Math.round((inactiveStudents/totalStudents)*100)}% of total</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      
+      <Tabs defaultValue="list" className="mb-6">
+        <TabsList className="mb-4">
+          <TabsTrigger value="list">Student List</TabsTrigger>
+          <TabsTrigger value="reports">Performance Reports</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="list">
+          <Card>
+            <CardHeader className="pb-0">
+              <CardTitle>Students</CardTitle>
+              <CardDescription>Manage student accounts and view information</CardDescription>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
-                    id="name"
-                    name="name"
-                    placeholder="Enter full name"
-                    value={newStudent.name}
-                    onChange={handleInputChange}
+                    placeholder="Search students..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10"
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="class">Class</Label>
-                  <Select
-                    value={newStudent.class}
-                    onValueChange={(value) => handleSelectChange("class", value)}
-                  >
-                    <SelectTrigger id="class">
-                      <SelectValue placeholder="Select class" />
+                
+                <div className="w-full sm:w-1/4">
+                  <Select value={classFilter} onValueChange={setClassFilter}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Filter by class" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Class 6">Class 6</SelectItem>
-                      <SelectItem value="Class 7">Class 7</SelectItem>
-                      <SelectItem value="Class 8">Class 8</SelectItem>
+                      <SelectItem value="all">All Classes</SelectItem>
+                      <SelectItem value="6">Class 6</SelectItem>
+                      <SelectItem value="7">Class 7</SelectItem>
+                      <SelectItem value="8">Class 8</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="w-full sm:w-1/4">
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Filter by status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="inactive">Inactive</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="rollNo">Roll Number</Label>
-                  <Input
-                    id="rollNo"
-                    name="rollNo"
-                    placeholder="e.g. C6-001"
-                    value={newStudent.rollNo}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="student@example.com"
-                    value={newStudent.email}
-                    onChange={handleInputChange}
-                  />
-                </div>
+              <DataTable
+                data={filteredStudents}
+                columns={studentColumns}
+              />
+            </CardContent>
+            <CardFooter className="flex justify-between">
+              <p className="text-sm text-gray-500">
+                Showing {filteredStudents.length} of {totalStudents} students
+              </p>
+              <div className="flex gap-3">
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Download className="h-4 w-4" />
+                  Export
+                </Button>
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Filter className="h-4 w-4" />
+                  More Filters
+                </Button>
               </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="parentName">Parent Name</Label>
-                  <Input
-                    id="parentName"
-                    name="parentName"
-                    placeholder="Enter parent name"
-                    value={newStudent.parentName}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    placeholder="e.g. 9876543210"
-                    value={newStudent.phone}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setShowAddStudentDialog(false)}>Cancel</Button>
-              <Button onClick={handleAddStudent} className="bg-indigo-600 hover:bg-indigo-700">Add Student</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
-      
-      <Card>
-        <CardHeader className="pb-2">
-          <div className="flex justify-between items-center">
-            <CardTitle>Student Directory</CardTitle>
-            <div className="flex items-center gap-3">
-              <Button variant="outline" className="flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                Email Selected
-              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="reports">
+          <Card>
+            <CardHeader className="pb-0">
+              <CardTitle>Student Performance Reports</CardTitle>
+              <CardDescription>View detailed academic performance reports for students</CardDescription>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <DataTable
+                data={studentReports}
+                columns={reportColumns}
+                searchField="name"
+              />
+            </CardContent>
+            <CardFooter className="flex justify-between">
+              <p className="text-sm text-gray-500">
+                Showing {studentReports.length} performance reports
+              </p>
               <Button variant="outline" className="flex items-center gap-2">
                 <Download className="h-4 w-4" />
-                Export
+                Export Reports
               </Button>
-            </div>
-          </div>
-          <CardDescription>
-            Manage all students across different classes
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-between">
-            <div className="flex flex-1 items-center gap-2 relative">
-              <Search className="absolute left-2.5 h-4 w-4 text-gray-500" />
-              <Input 
-                className="pl-8" 
-                placeholder="Search by name, roll number, or email" 
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <div className="flex items-center gap-3">
-              <Select value={selectedClass} onValueChange={setSelectedClass}>
-                <SelectTrigger className="w-32">
-                  <SelectValue placeholder="Class" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Classes</SelectItem>
-                  <SelectItem value="Class 6">Class 6</SelectItem>
-                  <SelectItem value="Class 7">Class 7</SelectItem>
-                  <SelectItem value="Class 8">Class 8</SelectItem>
-                </SelectContent>
-              </Select>
-              
-              <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                <SelectTrigger className="w-32">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="inactive">Inactive</SelectItem>
-                </SelectContent>
-              </Select>
-              
-              <Button variant="outline" className="gap-2">
-                <Filter className="h-4 w-4" />
-                More Filters
-              </Button>
-            </div>
-          </div>
-          
-          <div className="border rounded-md overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[250px] cursor-pointer" onClick={() => handleSort("name")}>
-                    <div className="flex items-center">
-                      Student Name
-                      {sortColumn === "name" && (
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                      )}
-                    </div>
-                  </TableHead>
-                  <TableHead className="cursor-pointer" onClick={() => handleSort("class")}>
-                    <div className="flex items-center">
-                      Class
-                      {sortColumn === "class" && (
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                      )}
-                    </div>
-                  </TableHead>
-                  <TableHead className="cursor-pointer" onClick={() => handleSort("rollNo")}>
-                    <div className="flex items-center">
-                      Roll No
-                      {sortColumn === "rollNo" && (
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                      )}
-                    </div>
-                  </TableHead>
-                  <TableHead>Parent Contact</TableHead>
-                  <TableHead className="cursor-pointer" onClick={() => handleSort("joinDate")}>
-                    <div className="flex items-center">
-                      Join Date
-                      {sortColumn === "joinDate" && (
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                      )}
-                    </div>
-                  </TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Performance</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredStudents.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={8} className="text-center py-8 text-gray-500">
-                      No students found matching your search criteria
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredStudents.map((student) => (
-                    <TableRow key={student.id}>
-                      <TableCell className="font-medium">
-                        <div className="flex items-center gap-3">
-                          <div className="h-8 w-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-medium text-sm">
-                            {student.name.split(' ').map(n => n[0]).join('')}
-                          </div>
-                          <div className="flex flex-col">
-                            <span>{student.name}</span>
-                            <span className="text-xs text-gray-500">{student.email}</span>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>{student.class}</TableCell>
-                      <TableCell>{student.rollNo}</TableCell>
-                      <TableCell>
-                        <div className="flex flex-col">
-                          <span>{student.parentName}</span>
-                          <span className="text-xs text-gray-500">{student.phone}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell>{student.joinDate}</TableCell>
-                      <TableCell>
-                        {student.status === 'active' ? (
-                          <Badge className="bg-green-100 text-green-800">Active</Badge>
-                        ) : (
-                          <Badge className="bg-red-100 text-red-800">Inactive</Badge>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        {getPerformanceBadge(student.performance)}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="flex items-center gap-2">
-                              <Eye className="h-4 w-4" />
-                              View Details
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="flex items-center gap-2">
-                              <Edit className="h-4 w-4" />
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="flex items-center gap-2 text-red-600">
-                              <Trash className="h-4 w-4" />
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </TeacherPageContainer>
   );
 };

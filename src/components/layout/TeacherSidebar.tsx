@@ -25,7 +25,9 @@ import {
   Settings, 
   LogOut, 
   Mail, 
-  HelpCircle
+  HelpCircle,
+  FileText,
+  Layers
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -70,6 +72,15 @@ const TeacherSidebar = () => {
                   <Link to="/teacher/create">
                     <PlusCircle />
                     <span>Create Content</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActive('/teacher/active-content')} tooltip="Active Content">
+                  <Link to="/teacher/active-content">
+                    <Layers />
+                    <span>Active Content</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
