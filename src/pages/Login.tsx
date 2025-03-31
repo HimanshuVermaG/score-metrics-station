@@ -26,7 +26,7 @@ const Login = () => {
   const location = useLocation();
 
   // Get the redirect path from location state or default to home
-  const from = location.state?.from?.pathname || '/';
+  const from = location.state?.from?.pathname || (userType === 'teacher' ? '/teacher' : '/');
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -39,7 +39,9 @@ const Login = () => {
   const onSubmit = async (values: LoginFormValues) => {
     const success = await login(Number(values.mobile), values.password, userType);
     if (success) {
-      navigate(from, { replace: true });
+      // Redirect based on user type
+      const redirectPath = userType === 'teacher' ? '/teacher' : '/';
+      navigate(redirectPath, { replace: true });
     }
   };
 
@@ -60,7 +62,9 @@ const Login = () => {
     
     const success = await login(mobile, password, type);
     if (success) {
-      navigate(from, { replace: true });
+      // Redirect based on user type
+      const redirectPath = type === 'teacher' ? '/teacher' : '/';
+      navigate(redirectPath, { replace: true });
     }
   };
 

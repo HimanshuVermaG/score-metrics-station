@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Bell, Search, User } from 'lucide-react';
+import { Bell, Search, User, LogOut } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const navItems = [
   { name: 'Dashboard', path: '/' },
@@ -15,6 +16,7 @@ const navItems = [
 
 const Navbar = () => {
   const location = useLocation();
+  const { logout } = useAuth();
   
   return (
     <div className="border-b">
@@ -51,6 +53,13 @@ const Navbar = () => {
           <Link to="/profile" className="p-2 rounded-full hover:bg-gray-100">
             <User className="h-5 w-5 text-gray-600" />
           </Link>
+          <button 
+            onClick={logout} 
+            className="p-2 rounded-full hover:bg-gray-100 flex items-center text-gray-600 hover:text-red-500"
+          >
+            <LogOut className="h-5 w-5 mr-1" />
+            <span className="text-sm">Logout</span>
+          </button>
         </div>
       </div>
     </div>

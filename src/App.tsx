@@ -31,6 +31,7 @@ import Grades from "./pages/Grades";
 import Assignments from "./pages/Assignments";
 import AssignmentDetail from "./pages/AssignmentDetail";
 import SubjectQuestionsPage from "./pages/SubjectQuestionsPage";
+import TeacherDashboard from "./pages/TeacherDashboard";
 
 // Properly wrap the application with providers
 const App = () => {
@@ -49,6 +50,7 @@ const App = () => {
               
               {/* Protected routes */}
               <Route element={<PrivateRoute />}>
+                {/* Student routes */}
                 <Route path="/" element={<Index />} />
                 <Route path="/tests" element={<Tests />} />
                 <Route path="/tests/start/:testId" element={<TestPage />} />
@@ -69,6 +71,9 @@ const App = () => {
                 <Route path="/tasks/:taskId" element={<TaskPage />} />
                 <Route path="/assignments" element={<Assignments />} />
                 <Route path="/assignments/:assignmentId" element={<AssignmentDetail />} />
+                
+                {/* Teacher routes */}
+                <Route path="/teacher" element={<TeacherDashboard />} />
               </Route>
               
               {/* 404 route */}
