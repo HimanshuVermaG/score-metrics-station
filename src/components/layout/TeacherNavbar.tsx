@@ -20,6 +20,15 @@ const TeacherNavbar = () => {
   const { logout, user } = useAuth();
   const [searchOpen, setSearchOpen] = useState(false);
   
+  // Helper function to safely get email 
+  const getUserEmail = () => {
+    // Check if user has email property
+    if (user && 'email' in user) {
+      return user.email;
+    }
+    return null;
+  };
+  
   return (
     <div className="border-b bg-white sticky top-0 z-30">
       <div className="flex h-16 items-center px-4 sm:px-6 max-w-7xl mx-auto">
@@ -97,7 +106,7 @@ const TeacherNavbar = () => {
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">{user?.name || 'Teacher'}</p>
                   <p className="text-xs leading-none text-muted-foreground">
-                    {user?.email || 'teacher@example.com'}
+                    {getUserEmail() || 'teacher@example.com'}
                   </p>
                 </div>
               </DropdownMenuLabel>

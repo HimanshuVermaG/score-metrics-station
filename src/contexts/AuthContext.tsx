@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -10,6 +9,7 @@ type Student = {
   mobile: number;
   standard: number;
   srNumber: string;
+  email?: string;
   type: 'student';
 };
 
@@ -19,6 +19,7 @@ type Teacher = {
   ehrmsCode: string;
   schoolName: string;
   mobile: number;
+  email?: string;
   type: 'teacher';
 };
 
@@ -44,7 +45,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if user is already logged in from localStorage
     const storedUser = localStorage.getItem('user');
     const storedUserType = localStorage.getItem('userType');
     if (storedUser && storedUserType) {
@@ -58,7 +58,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       setLoading(true);
       
-      // Demo accounts for quick testing
       if (type === 'student' && mobile === 1234567890 && password === 'demo123') {
         const demoStudent: Student = {
           id: 'demo-student-id',
@@ -68,6 +67,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           mobile: 1234567890,
           standard: 10,
           srNumber: 'SR12345',
+          email: 'student@example.com',
           type: 'student'
         };
         setUser(demoStudent);
@@ -90,6 +90,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           ehrmsCode: 'EHRMS12345',
           schoolName: 'Demo School',
           mobile: 9876543210,
+          email: 'teacher@example.com',
           type: 'teacher'
         };
         setUser(demoTeacher);
@@ -105,7 +106,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return true;
       }
       
-      // Real API call
       const endpoint = type === 'student' 
         ? 'http://localhost:8000/api/v1/student/login'
         : 'http://localhost:8000/api/v1/teacher/login';
@@ -124,7 +124,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error(data.message || 'Login failed');
       }
 
-      // Set authenticated state
       const userData = type === 'student' ? 
         { ...data.student, type: 'student' } : 
         { ...data.teacher, type: 'teacher' };
