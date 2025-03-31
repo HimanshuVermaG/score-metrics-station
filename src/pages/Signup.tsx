@@ -12,7 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 
-const signupSchema = z.object({
+// Student signup schema
+const studentSignupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   fatherName: z.string().min(2, "Father's name must be at least 2 characters"),
   schoolName: z.string().min(2, "School name is required"),
@@ -26,7 +27,21 @@ const signupSchema = z.object({
   path: ["confirmPassword"],
 });
 
-type SignupFormValues = z.infer<typeof signupSchema>;
+// Teacher signup schema
+const teacherSignupSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  ehrmsCode: z.string().min(2, "EHRMS Code is required"),
+  schoolName: z.string().min(2, "School name is required"),
+  mobile: z.string().min(10, "Mobile number must be at least 10 digits"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string().min(6, "Confirm password is required"),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
+
+type StudentSignupFormValues = z.infer<typeof studentSignupSchema>;
+type TeacherSignupFormValues = z.infer<typeof teacherSignupSchema>;
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -35,8 +50,9 @@ const Signup = () => {
   const { signup, loading } = useAuth();
   const navigate = useNavigate();
 
-  const form = useForm<SignupFormValues>({
-    resolver: zodResolver(signupSchema),
+  // Student form
+  const studentForm = useForm<StudentSignupFormValues>({
+    resolver: zodResolver(studentSignupSchema),
     defaultValues: {
       name: "",
       fatherName: "",
@@ -49,7 +65,20 @@ const Signup = () => {
     },
   });
 
-  const onSubmit = async (values: SignupFormValues) => {
+  // Teacher form
+  const teacherForm = useForm<TeacherSignupFormValues>({
+    resolver: zodResolver(teacherSignupSchema),
+    defaultValues: {
+      name: "",
+      ehrmsCode: "",
+      schoolName: "",
+      mobile: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  const onStudentSubmit = async (values: StudentSignupFormValues) => {
     const studentData = {
       name: values.name,
       fatherName: values.fatherName,
@@ -60,7 +89,22 @@ const Signup = () => {
       password: values.password,
     };
 
-    const success = await signup(studentData);
+    const success = await signup(studentData, 'student');
+    if (success) {
+      navigate('/login');
+    }
+  };
+
+  const onTeacherSubmit = async (values: TeacherSignupFormValues) => {
+    const teacherData = {
+      name: values.name,
+      ehrmsCode: values.ehrmsCode,
+      schoolName: values.schoolName,
+      mobile: Number(values.mobile),
+      password: values.password,
+    };
+
+    const success = await signup(teacherData, 'teacher');
     if (success) {
       navigate('/login');
     }
@@ -117,17 +161,111 @@ const Signup = () => {
           </CardHeader>
           
           <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+            {userType === 'student' ? (
+              <Form {...studentForm}>
+                <form onSubmit={studentForm.handleSubmit(onStudentSubmit)} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={studentForm.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Student Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter student name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={studentForm.control}
+                      name="fatherName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Father's Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter father's name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
                   <FormField
-                    control={form.control}
-                    name="name"
+                    control={studentForm.control}
+                    name="schoolName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Student Name</FormLabel>
+                        <FormLabel>School</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select School" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="School 1">School 1</SelectItem>
+                            <SelectItem value="School 2">School 2</SelectItem>
+                            <SelectItem value="School 3">School 3</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={studentForm.control}
+                      name="standard"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Class</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select Class" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((grade) => (
+                                <SelectItem key={grade} value={String(grade)}>
+                                  Class {grade}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={studentForm.control}
+                      name="srNumber"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>S/R Number</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter S/R number" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  
+                  <FormField
+                    control={studentForm.control}
+                    name="mobile"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Mobile Number</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter student name" {...field} />
+                          <Input placeholder="Enter mobile number" type="tel" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -135,62 +273,123 @@ const Signup = () => {
                   />
                   
                   <FormField
-                    control={form.control}
-                    name="fatherName"
+                    control={studentForm.control}
+                    name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Father's Name</FormLabel>
+                        <FormLabel>Password</FormLabel>
+                        <div className="relative">
+                          <FormControl>
+                            <Input 
+                              placeholder="Create password" 
+                              type={showPassword ? "text" : "password"} 
+                              {...field} 
+                            />
+                          </FormControl>
+                          <button
+                            type="button"
+                            className="absolute inset-y-0 right-0 flex items-center pr-3"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4 text-gray-500" />
+                            ) : (
+                              <Eye className="h-4 w-4 text-gray-500" />
+                            )}
+                          </button>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={studentForm.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirm Password</FormLabel>
+                        <div className="relative">
+                          <FormControl>
+                            <Input 
+                              placeholder="Confirm password" 
+                              type={showConfirmPassword ? "text" : "password"} 
+                              {...field} 
+                            />
+                          </FormControl>
+                          <button
+                            type="button"
+                            className="absolute inset-y-0 right-0 flex items-center pr-3"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          >
+                            {showConfirmPassword ? (
+                              <EyeOff className="h-4 w-4 text-gray-500" />
+                            ) : (
+                              <Eye className="h-4 w-4 text-gray-500" />
+                            )}
+                          </button>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-indigo-600 hover:bg-indigo-700"
+                    disabled={loading}
+                  >
+                    Sign Up <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </form>
+              </Form>
+            ) : (
+              <Form {...teacherForm}>
+                <form onSubmit={teacherForm.handleSubmit(onTeacherSubmit)} className="space-y-4">
+                  <FormField
+                    control={teacherForm.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Teacher Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter father's name" {...field} />
+                          <Input placeholder="Enter teacher name" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                </div>
-
-                <FormField
-                  control={form.control}
-                  name="schoolName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>School</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select School" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="School 1">School 1</SelectItem>
-                          <SelectItem value="School 2">School 2</SelectItem>
-                          <SelectItem value="School 3">School 3</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="grid grid-cols-2 gap-4">
+                  
                   <FormField
-                    control={form.control}
-                    name="standard"
+                    control={teacherForm.control}
+                    name="ehrmsCode"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Class</FormLabel>
+                        <FormLabel>EHRMS Code</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter EHRMS code" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={teacherForm.control}
+                    name="schoolName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>School</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select Class" />
+                              <SelectValue placeholder="Select School" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((grade) => (
-                              <SelectItem key={grade} value={String(grade)}>
-                                Class {grade}
-                              </SelectItem>
-                            ))}
+                            <SelectItem value="School 1">School 1</SelectItem>
+                            <SelectItem value="School 2">School 2</SelectItem>
+                            <SelectItem value="School 3">School 3</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -199,105 +398,91 @@ const Signup = () => {
                   />
                   
                   <FormField
-                    control={form.control}
-                    name="srNumber"
+                    control={teacherForm.control}
+                    name="mobile"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>S/R Number</FormLabel>
+                        <FormLabel>Mobile Number</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter S/R number" {...field} />
+                          <Input placeholder="Enter mobile number" type="tel" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                </div>
-                
-                <FormField
-                  control={form.control}
-                  name="mobile"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Mobile Number</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter mobile number" type="tel" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <div className="relative">
-                        <FormControl>
-                          <Input 
-                            placeholder="Create password" 
-                            type={showPassword ? "text" : "password"} 
-                            {...field} 
-                          />
-                        </FormControl>
-                        <button
-                          type="button"
-                          className="absolute inset-y-0 right-0 flex items-center pr-3"
-                          onClick={() => setShowPassword(!showPassword)}
-                        >
-                          {showPassword ? (
-                            <EyeOff className="h-4 w-4 text-gray-500" />
-                          ) : (
-                            <Eye className="h-4 w-4 text-gray-500" />
-                          )}
-                        </button>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Confirm Password</FormLabel>
-                      <div className="relative">
-                        <FormControl>
-                          <Input 
-                            placeholder="Confirm password" 
-                            type={showConfirmPassword ? "text" : "password"} 
-                            {...field} 
-                          />
-                        </FormControl>
-                        <button
-                          type="button"
-                          className="absolute inset-y-0 right-0 flex items-center pr-3"
-                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        >
-                          {showConfirmPassword ? (
-                            <EyeOff className="h-4 w-4 text-gray-500" />
-                          ) : (
-                            <Eye className="h-4 w-4 text-gray-500" />
-                          )}
-                        </button>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <Button 
-                  type="submit" 
-                  className="w-full bg-indigo-600 hover:bg-indigo-700"
-                  disabled={loading}
-                >
-                  Sign Up <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </form>
-            </Form>
+                  
+                  <FormField
+                    control={teacherForm.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <div className="relative">
+                          <FormControl>
+                            <Input 
+                              placeholder="Create password" 
+                              type={showPassword ? "text" : "password"} 
+                              {...field} 
+                            />
+                          </FormControl>
+                          <button
+                            type="button"
+                            className="absolute inset-y-0 right-0 flex items-center pr-3"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4 text-gray-500" />
+                            ) : (
+                              <Eye className="h-4 w-4 text-gray-500" />
+                            )}
+                          </button>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={teacherForm.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirm Password</FormLabel>
+                        <div className="relative">
+                          <FormControl>
+                            <Input 
+                              placeholder="Confirm password" 
+                              type={showConfirmPassword ? "text" : "password"} 
+                              {...field} 
+                            />
+                          </FormControl>
+                          <button
+                            type="button"
+                            className="absolute inset-y-0 right-0 flex items-center pr-3"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          >
+                            {showConfirmPassword ? (
+                              <EyeOff className="h-4 w-4 text-gray-500" />
+                            ) : (
+                              <Eye className="h-4 w-4 text-gray-500" />
+                            )}
+                          </button>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-indigo-600 hover:bg-indigo-700"
+                    disabled={loading}
+                  >
+                    Sign Up <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </form>
+              </Form>
+            )}
           </CardContent>
           
           <CardFooter className="justify-center">

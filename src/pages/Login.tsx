@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -23,6 +23,10 @@ const Login = () => {
   const [userType, setUserType] = useState<'student' | 'teacher'>('student');
   const { login, loading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the redirect path from location state or default to home
+  const from = location.state?.from?.pathname || '/';
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -33,9 +37,30 @@ const Login = () => {
   });
 
   const onSubmit = async (values: LoginFormValues) => {
-    const success = await login(Number(values.mobile), values.password);
+    const success = await login(Number(values.mobile), values.password, userType);
     if (success) {
-      navigate('/');
+      navigate(from, { replace: true });
+    }
+  };
+
+  // Demo account login handlers
+  const loginWithDemoAccount = async (type: 'student' | 'teacher') => {
+    let mobile, password;
+    
+    if (type === 'student') {
+      mobile = 1234567890;
+      password = 'demo123';
+    } else {
+      mobile = 9876543210;
+      password = 'demo123';
+    }
+    
+    form.setValue('mobile', String(mobile));
+    form.setValue('password', password);
+    
+    const success = await login(mobile, password, type);
+    if (success) {
+      navigate(from, { replace: true });
     }
   };
 
@@ -160,6 +185,29 @@ const Login = () => {
                 >
                   Login <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
+                
+                {/* Demo account buttons */}
+                <div className="pt-2">
+                  <p className="text-sm text-center mb-2 text-gray-600">Quick access with demo accounts:</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Button 
+                      type="button" 
+                      variant="outline"
+                      className="text-xs"
+                      onClick={() => loginWithDemoAccount('student')}
+                    >
+                      Demo Student
+                    </Button>
+                    <Button 
+                      type="button" 
+                      variant="outline"
+                      className="text-xs"
+                      onClick={() => loginWithDemoAccount('teacher')}
+                    >
+                      Demo Teacher
+                    </Button>
+                  </div>
+                </div>
               </form>
             </Form>
           </CardContent>

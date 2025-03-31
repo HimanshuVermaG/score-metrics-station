@@ -10,13 +10,26 @@ type Student = {
   mobile: number;
   standard: number;
   srNumber: string;
+  type: 'student';
 };
+
+type Teacher = {
+  id: string;
+  name: string;
+  ehrmsCode: string;
+  schoolName: string;
+  mobile: number;
+  type: 'teacher';
+};
+
+type User = Student | Teacher;
 
 type AuthContextType = {
   isAuthenticated: boolean;
-  student: Student | null;
-  login: (mobile: number, password: string) => Promise<boolean>;
-  signup: (studentData: Omit<Student, 'id'> & { password: string }) => Promise<boolean>;
+  user: User | null;
+  userType: 'student' | 'teacher' | null;
+  login: (mobile: number, password: string, type: 'student' | 'teacher') => Promise<boolean>;
+  signup: (userData: any, type: 'student' | 'teacher') => Promise<boolean>;
   logout: () => void;
   loading: boolean;
 };
@@ -25,24 +38,79 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [student, setStudent] = useState<Student | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [userType, setUserType] = useState<'student' | 'teacher' | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { toast } = useToast();
 
   useEffect(() => {
     // Check if user is already logged in from localStorage
-    const storedStudent = localStorage.getItem('student');
-    if (storedStudent) {
-      setStudent(JSON.parse(storedStudent));
+    const storedUser = localStorage.getItem('user');
+    const storedUserType = localStorage.getItem('userType');
+    if (storedUser && storedUserType) {
+      setUser(JSON.parse(storedUser));
+      setUserType(storedUserType as 'student' | 'teacher');
       setIsAuthenticated(true);
     }
   }, []);
 
-  const login = async (mobile: number, password: string): Promise<boolean> => {
+  const login = async (mobile: number, password: string, type: 'student' | 'teacher'): Promise<boolean> => {
     try {
       setLoading(true);
       
-      const response = await fetch('http://localhost:8000/api/v1/student/login', {
+      // Demo accounts for quick testing
+      if (type === 'student' && mobile === 1234567890 && password === 'demo123') {
+        const demoStudent: Student = {
+          id: 'demo-student-id',
+          name: 'Demo Student',
+          fatherName: 'Demo Father',
+          schoolName: 'Demo School',
+          mobile: 1234567890,
+          standard: 10,
+          srNumber: 'SR12345',
+          type: 'student'
+        };
+        setUser(demoStudent);
+        setUserType('student');
+        setIsAuthenticated(true);
+        localStorage.setItem('user', JSON.stringify(demoStudent));
+        localStorage.setItem('userType', 'student');
+        
+        toast({
+          title: "Demo login successful",
+          description: "Welcome to EduConnect demo account!",
+        });
+        return true;
+      }
+      
+      if (type === 'teacher' && mobile === 9876543210 && password === 'demo123') {
+        const demoTeacher: Teacher = {
+          id: 'demo-teacher-id',
+          name: 'Demo Teacher',
+          ehrmsCode: 'EHRMS12345',
+          schoolName: 'Demo School',
+          mobile: 9876543210,
+          type: 'teacher'
+        };
+        setUser(demoTeacher);
+        setUserType('teacher');
+        setIsAuthenticated(true);
+        localStorage.setItem('user', JSON.stringify(demoTeacher));
+        localStorage.setItem('userType', 'teacher');
+        
+        toast({
+          title: "Demo login successful",
+          description: "Welcome to EduConnect teacher demo account!",
+        });
+        return true;
+      }
+      
+      // Real API call
+      const endpoint = type === 'student' 
+        ? 'http://localhost:8000/api/v1/student/login'
+        : 'http://localhost:8000/api/v1/teacher/login';
+        
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,9 +125,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       // Set authenticated state
-      setStudent(data.student);
+      const userData = type === 'student' ? 
+        { ...data.student, type: 'student' } : 
+        { ...data.teacher, type: 'teacher' };
+        
+      setUser(userData);
+      setUserType(type);
       setIsAuthenticated(true);
-      localStorage.setItem('student', JSON.stringify(data.student));
+      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('userType', type);
       
       toast({
         title: "Login successful",
@@ -80,16 +154,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signup = async (studentData: Omit<Student, 'id'> & { password: string }): Promise<boolean> => {
+  const signup = async (userData: any, type: 'student' | 'teacher'): Promise<boolean> => {
     try {
       setLoading(true);
       
-      const response = await fetch('http://localhost:8000/api/v1/student/create', {
+      const endpoint = type === 'student' 
+        ? 'http://localhost:8000/api/v1/student/create'
+        : 'http://localhost:8000/api/v1/teacher/create';
+      
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(studentData),
+        body: JSON.stringify(userData),
       });
 
       const data = await response.json();
@@ -119,8 +197,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     setIsAuthenticated(false);
-    setStudent(null);
-    localStorage.removeItem('student');
+    setUser(null);
+    setUserType(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('userType');
     toast({
       title: "Logged out",
       description: "You have been logged out successfully",
@@ -131,7 +211,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     <AuthContext.Provider
       value={{
         isAuthenticated,
-        student,
+        user,
+        userType,
         login,
         signup,
         logout,
