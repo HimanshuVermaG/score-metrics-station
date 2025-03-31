@@ -31,7 +31,13 @@ import Grades from "./pages/Grades";
 import Assignments from "./pages/Assignments";
 import AssignmentDetail from "./pages/AssignmentDetail";
 import SubjectQuestionsPage from "./pages/SubjectQuestionsPage";
+
+// Teacher Pages
 import TeacherDashboard from "./pages/TeacherDashboard";
+import TeacherReports from "./pages/TeacherReports";
+import TeacherClass6 from "./pages/TeacherClass6";
+import TeacherCreateContent from "./pages/TeacherCreateContent";
+import TeacherStudents from "./pages/TeacherStudents";
 
 // Properly wrap the application with providers
 const App = () => {
@@ -74,6 +80,10 @@ const App = () => {
                 
                 {/* Teacher routes */}
                 <Route path="/teacher" element={<TeacherDashboard />} />
+                <Route path="/teacher/reports" element={<TeacherReports />} />
+                <Route path="/teacher/create" element={<TeacherCreateContent />} />
+                <Route path="/teacher/students" element={<TeacherStudents />} />
+                <Route path="/teacher/class/6" element={<TeacherClass6 />} />
               </Route>
               
               {/* 404 route */}
