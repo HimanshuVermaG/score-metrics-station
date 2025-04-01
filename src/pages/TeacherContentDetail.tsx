@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import TeacherPageContainer from '@/components/layout/TeacherPageContainer';
@@ -8,9 +7,21 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { DataTable } from '@/components/ui/data-table';
-import { Calendar, Clock, Users, BookOpen, CheckCircle, XCircle, Download, Eye, Pencil, Trash2, ArrowLeft } from 'lucide-react';
+import { 
+  Calendar, 
+  Clock, 
+  Users, 
+  BookOpen, 
+  CheckCircle, 
+  XCircle, 
+  Download, 
+  Eye, 
+  Pencil, 
+  Trash2, 
+  ArrowLeft,
+  PlusCircle 
+} from 'lucide-react';
 
-// Mock data for content
 const contentItems = [
   {
     id: '1',
@@ -75,7 +86,6 @@ const TeacherContentDetail = () => {
   const { contentId } = useParams();
   const [activeTab, setActiveTab] = useState('overview');
   
-  // Find the content based on contentId
   const content = contentItems.find(item => item.id === contentId);
   
   if (!content) {
@@ -92,10 +102,8 @@ const TeacherContentDetail = () => {
     );
   }
   
-  // Calculate percentage of students completed
   const completionPercentage = Math.round((content.studentsCompleted / content.students) * 100);
   
-  // Get status badge color
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'active':
@@ -109,7 +117,6 @@ const TeacherContentDetail = () => {
     }
   };
   
-  // Sample student data for results
   const studentResults = [
     { id: 1, name: 'Priya Sharma', score: 92, status: 'completed', submittedAt: '2023-10-26 14:30', timeSpent: '28 min' },
     { id: 2, name: 'Rahul Singh', score: 85, status: 'completed', submittedAt: '2023-10-25 15:42', timeSpent: '24 min' },
@@ -196,7 +203,6 @@ const TeacherContentDetail = () => {
     }
   ];
   
-  // Sample question data for questions tab
   const questionColumns = [
     {
       id: 'id',
