@@ -4,12 +4,13 @@ import TeacherPageContainer from '@/components/layout/TeacherPageContainer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
 import { 
   Plus, ChevronLeft, ChevronRight, Users, BookOpen, Clock, 
-  Calendar as CalendarIcon, MapPin, Tag, ListChecks, Input
+  Calendar as CalendarIcon, MapPin, Tag, ListChecks, FileText
 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 

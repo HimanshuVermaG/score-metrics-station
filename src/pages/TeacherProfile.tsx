@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import TeacherPageContainer from '@/components/layout/TeacherPageContainer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -7,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   User, Mail, Phone, MapPin, Calendar, Book, FileText, 
   Award, Briefcase, School, Edit, Lock, Bell, Settings,
