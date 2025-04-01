@@ -43,6 +43,10 @@ import TeacherActiveContent from "./pages/TeacherActiveContent";
 import TeacherContentDetail from "./pages/TeacherContentDetail";
 import TeacherCreateContent from "./pages/TeacherCreateContent";
 import TeacherStudents from "./pages/TeacherStudents";
+import TeacherReviews from "./pages/TeacherReviews";
+import TeacherActivityLog from "./pages/TeacherActivityLog";
+import TeacherCalendar from "./pages/TeacherCalendar";
+import TeacherProfile from "./pages/TeacherProfile";
 
 // Properly wrap the application with providers
 const App = () => {
@@ -94,6 +98,10 @@ const App = () => {
                 <Route path="/teacher/class/6" element={<TeacherClass6 />} />
                 <Route path="/teacher/class/7" element={<TeacherClass7 />} />
                 <Route path="/teacher/class/8" element={<TeacherClass8 />} />
+                <Route path="/teacher/reviews" element={<TeacherReviews />} />
+                <Route path="/teacher/activity-log" element={<TeacherActivityLog />} />
+                <Route path="/teacher/calendar" element={<TeacherCalendar />} />
+                <Route path="/teacher/profile" element={<TeacherProfile />} />
               </Route>
               
               {/* 404 route */}
