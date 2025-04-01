@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import TeacherPageContainer from '@/components/layout/TeacherPageContainer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -8,13 +7,13 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { 
   BarChart2, 
-  PieChart, 
+  PieChart as PieChartIcon, 
   ArrowUp, 
   ArrowDown, 
   Minus, 
   Download, 
   Filter, 
-  BarChart,
+  BarChart as BarChartIcon,
   BookOpen,
   Users,
   Clock,
@@ -29,7 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  BarChart as RechartsBarChart,
+  BarChart,
   Bar,
   XAxis,
   YAxis,
@@ -37,7 +36,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  PieChart as RechartsPieChart,
+  PieChart,
   Pie,
   Cell,
   LineChart,
@@ -45,14 +44,12 @@ import {
 } from 'recharts';
 import { DataTable } from '@/components/ui/data-table';
 
-// Mock data for class metrics
 const classMetrics = [
   { id: 'class6', name: 'Class 6', students: 32, avgScore: 78, tests: 15, improvement: 5.2 },
   { id: 'class7', name: 'Class 7', students: 28, avgScore: 82, tests: 12, improvement: 3.8 },
   { id: 'class8', name: 'Class 8', students: 30, avgScore: 75, tests: 14, improvement: -1.5 },
 ];
 
-// Mock data for subject performance
 const subjectPerformance = [
   { name: 'Mathematics', score: 76, tests: 10, stdDev: 8.5 },
   { name: 'English', score: 82, tests: 8, stdDev: 6.2 },
@@ -61,7 +58,6 @@ const subjectPerformance = [
   { name: 'Social Studies', score: 74, tests: 6, stdDev: 9.1 },
 ];
 
-// Mock data for top performing students
 const topStudents = [
   { id: 1, name: 'Priya Sharma', class: 'Class 7', avgScore: 95, improvement: 4.2, streak: 12 },
   { id: 2, name: 'Rahul Singh', class: 'Class 8', avgScore: 92, improvement: 6.5, streak: 8 },
@@ -70,7 +66,6 @@ const topStudents = [
   { id: 5, name: 'Neha Gupta', class: 'Class 6', avgScore: 89, improvement: 5.0, streak: 9 },
 ];
 
-// Mock data for struggling students
 const strugglingStudents = [
   { id: 1, name: 'Arjun Kumar', class: 'Class 8', avgScore: 58, decline: 4.5, missedTests: 3 },
   { id: 2, name: 'Kavita Sharma', class: 'Class 6', avgScore: 62, decline: 3.2, missedTests: 2 },
@@ -79,7 +74,6 @@ const strugglingStudents = [
   { id: 5, name: 'Deepak Joshi', class: 'Class 6', avgScore: 68, decline: 3.5, missedTests: 2 },
 ];
 
-// Mock data for charts
 const monthlyPerformanceData = [
   { month: 'Jan', class6: 72, class7: 76, class8: 70 },
   { month: 'Feb', class6: 74, class7: 78, class8: 71 },
@@ -108,7 +102,6 @@ const TeacherReports = () => {
   const [subjectFilter, setSubjectFilter] = useState('all');
   const [timeFilter, setTimeFilter] = useState('last30');
   
-  // Function to get improvement trend icon and color
   const getImprovementTrend = (value: number) => {
     if (value > 0) {
       return { icon: <ArrowUp className="h-4 w-4 text-green-500" />, color: 'text-green-500' };
@@ -119,14 +112,12 @@ const TeacherReports = () => {
     }
   };
   
-  // Function to get score color
   const getScoreColor = (score: number) => {
     if (score >= 85) return 'text-green-600';
     if (score >= 70) return 'text-amber-600';
     return 'text-red-600';
   };
   
-  // Columns for top students table
   const topStudentColumns = [
     {
       id: 'name',
@@ -182,7 +173,6 @@ const TeacherReports = () => {
     }
   ];
   
-  // Columns for struggling students table
   const strugglingStudentColumns = [
     {
       id: 'name',
@@ -291,7 +281,7 @@ const TeacherReports = () => {
             <div className="flex justify-between items-center mb-2">
               <div className="flex items-center">
                 <div className="p-2 rounded-full bg-green-100 mr-3">
-                  <BarChart className="h-5 w-5 text-green-600" />
+                  <BarChartIcon className="h-5 w-5 text-green-600" />
                 </div>
                 <span className="font-medium">Average Score</span>
               </div>
@@ -410,14 +400,14 @@ const TeacherReports = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <PieChart className="mr-2 h-5 w-5 text-indigo-600" />
+              <PieChartIcon className="mr-2 h-5 w-5 text-indigo-600" />
               Subject Distribution
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-64 flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
-                <RechartsPieChart>
+                <PieChart>
                   <Pie
                     data={subjectDistributionData}
                     cx="50%"
@@ -434,7 +424,7 @@ const TeacherReports = () => {
                     ))}
                   </Pie>
                   <Tooltip />
-                </RechartsPieChart>
+                </PieChart>
               </ResponsiveContainer>
             </div>
             <div className="text-sm text-center text-gray-500 mt-4">
