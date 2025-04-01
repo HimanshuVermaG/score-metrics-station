@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { allQuestions } from '@/data/questionSets';
@@ -6,12 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Book, ArrowRight, BookOpen, GraduationCap, Brain, Globe } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-
 interface QuestionSetsTabProps {
   activeTab: string;
 }
-
-const QuestionSetsTab: React.FC<QuestionSetsTabProps> = ({ activeTab }) => {
+const QuestionSetsTab: React.FC<QuestionSetsTabProps> = ({
+  activeTab
+}) => {
   // Only show this component if the active tab is "Question Sets"
   if (activeTab !== 'Question Sets') return null;
 
@@ -26,10 +25,8 @@ const QuestionSetsTab: React.FC<QuestionSetsTabProps> = ({ activeTab }) => {
   const englishProgress = 55;
   const hindiProgress = 45;
   const gsProgress = 65;
-
-  return (
-    <div className="mt-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+  return <div className="mt-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
         <Link to="/practice/math" className="block">
           <Card className="h-full hover:shadow-md transition-shadow">
             <CardHeader className="pb-2">
@@ -194,8 +191,6 @@ const QuestionSetsTab: React.FC<QuestionSetsTabProps> = ({ activeTab }) => {
           </Card>
         </Link>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default QuestionSetsTab;
