@@ -15,6 +15,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const TeacherNavbar = () => {
   const { logout, user } = useAuth();
@@ -91,6 +97,39 @@ const TeacherNavbar = () => {
             </Badge>
           </Button>
           
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" className="relative" asChild>
+                  <Link to="/teacher/help">
+                    <HelpCircle className="h-5 w-5 text-gray-600" />
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Help & Support</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="relative text-red-500"
+                  onClick={logout}
+                >
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Logout</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full">
@@ -122,20 +161,6 @@ const TeacherNavbar = () => {
                   <User className="mr-2 h-4 w-4" />
                   Settings
                 </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/teacher/help" className="cursor-pointer flex w-full items-center">
-                  <HelpCircle className="mr-2 h-4 w-4" />
-                  Help & Support
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem 
-                className="text-red-500 focus:text-red-500 cursor-pointer"
-                onClick={logout}
-              >
-                <LogOut className="mr-2 h-4 w-4" />
-                Logout
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

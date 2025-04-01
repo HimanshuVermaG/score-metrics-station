@@ -39,6 +39,7 @@ import TeacherClass6 from "./pages/TeacherClass6";
 import TeacherClass7 from "./pages/TeacherClass7";
 import TeacherClass8 from "./pages/TeacherClass8";
 import TeacherActiveContent from "./pages/TeacherActiveContent";
+import TeacherContentDetail from "./pages/TeacherContentDetail";
 import TeacherCreateContent from "./pages/TeacherCreateContent";
 import TeacherStudents from "./pages/TeacherStudents";
 
@@ -86,6 +87,7 @@ const App = () => {
                 <Route path="/teacher/reports" element={<TeacherReports />} />
                 <Route path="/teacher/create" element={<TeacherCreateContent />} />
                 <Route path="/teacher/active-content" element={<TeacherActiveContent />} />
+                <Route path="/teacher/content/:contentId" element={<TeacherContentDetail />} />
                 <Route path="/teacher/students" element={<TeacherStudents />} />
                 <Route path="/teacher/class/6" element={<TeacherClass6 />} />
                 <Route path="/teacher/class/7" element={<TeacherClass7 />} />

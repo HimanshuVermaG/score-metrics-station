@@ -15,6 +15,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 
 // Mock data for active quizzes and tests
 const activeContent = [
@@ -107,12 +116,16 @@ const activeContent = [
 const TeacherActiveContent = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [classFilter, setClassFilter] = useState('all');
+  const [activeTab, setActiveTab] = useState('all');
 
   // Filter content based on selected filters
   const filteredContent = activeContent.filter(content => {
     const statusMatch = statusFilter === 'all' || content.status === statusFilter;
     const classMatch = classFilter === 'all' || content.class === classFilter;
-    return statusMatch && classMatch;
+    const tabMatch = activeTab === 'all' || 
+                   (activeTab === 'quiz' && content.type === 'quiz') || 
+                   (activeTab === 'test' && content.type === 'test');
+    return statusMatch && classMatch && tabMatch;
   });
 
   // Get status badge color
@@ -144,6 +157,11 @@ const TeacherActiveContent = () => {
   const getCompletionPercentage = (completed: number, total: number) => {
     return Math.round((completed / total) * 100);
   };
+  
+  // Filter content by class
+  const class6Content = activeContent.filter(content => content.class === 'Class 6');
+  const class7Content = activeContent.filter(content => content.class === 'Class 7');
+  const class8Content = activeContent.filter(content => content.class === 'Class 8');
 
   return (
     <TeacherPageContainer>
@@ -153,7 +171,7 @@ const TeacherActiveContent = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <Card className="bg-gradient-to-br from-indigo-50 to-indigo-100">
+        <Card className="bg-gradient-to-br from-indigo-50 to-indigo-100 hover:shadow-md transition-shadow">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
@@ -167,7 +185,7 @@ const TeacherActiveContent = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-amber-50 to-amber-100">
+        <Card className="bg-gradient-to-br from-amber-50 to-amber-100 hover:shadow-md transition-shadow">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
@@ -181,7 +199,7 @@ const TeacherActiveContent = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100">
+        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 hover:shadow-md transition-shadow">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
@@ -194,6 +212,68 @@ const TeacherActiveContent = () => {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      <div className="mb-6">
+        <NavigationMenu className="bg-white rounded-lg border p-1">
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuLink 
+                className={`${navigationMenuTriggerStyle()} ${activeTab === 'all' ? 'bg-indigo-50 text-indigo-700' : ''}`}
+                onClick={() => setActiveTab('all')}
+              >
+                All Content
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink 
+                className={`${navigationMenuTriggerStyle()} ${activeTab === 'quiz' ? 'bg-indigo-50 text-indigo-700' : ''}`}
+                onClick={() => setActiveTab('quiz')}
+              >
+                Quizzes
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink 
+                className={`${navigationMenuTriggerStyle()} ${activeTab === 'test' ? 'bg-indigo-50 text-indigo-700' : ''}`}
+                onClick={() => setActiveTab('test')}
+              >
+                Tests
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>By Class</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-3">
+                  <div>
+                    <NavigationMenuLink asChild>
+                      <Link to="/teacher/class/6" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-indigo-50 hover:text-indigo-700">
+                        <div className="text-sm font-medium leading-none">Class 6</div>
+                        <p className="text-xs leading-snug text-muted-foreground">{class6Content.length} active content items</p>
+                      </Link>
+                    </NavigationMenuLink>
+                  </div>
+                  <div>
+                    <NavigationMenuLink asChild>
+                      <Link to="/teacher/class/7" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-indigo-50 hover:text-indigo-700">
+                        <div className="text-sm font-medium leading-none">Class 7</div>
+                        <p className="text-xs leading-snug text-muted-foreground">{class7Content.length} active content items</p>
+                      </Link>
+                    </NavigationMenuLink>
+                  </div>
+                  <div>
+                    <NavigationMenuLink asChild>
+                      <Link to="/teacher/class/8" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-indigo-50 hover:text-indigo-700">
+                        <div className="text-sm font-medium leading-none">Class 8</div>
+                        <p className="text-xs leading-snug text-muted-foreground">{class8Content.length} active content items</p>
+                      </Link>
+                    </NavigationMenuLink>
+                  </div>
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
       </div>
 
       <div className="mb-6 flex flex-col sm:flex-row gap-4">
@@ -288,7 +368,7 @@ const TeacherActiveContent = () => {
                 variant="outline"
                 asChild
               >
-                <Link to={`/teacher/content/view/${content.id}`}>
+                <Link to={`/teacher/content/${content.id}`}>
                   View Details
                 </Link>
               </Button>
@@ -296,7 +376,7 @@ const TeacherActiveContent = () => {
                 asChild
                 className="bg-indigo-600 hover:bg-indigo-700"
               >
-                <Link to={`/teacher/content/edit/${content.id}`}>
+                <Link to={`/teacher/content/${content.id}`}>
                   {content.status === 'scheduled' ? 'Edit' : 'View Results'}
                 </Link>
               </Button>

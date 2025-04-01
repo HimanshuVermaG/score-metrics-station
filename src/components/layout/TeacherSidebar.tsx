@@ -23,19 +23,16 @@ import {
   BookOpen, 
   Calendar, 
   Settings, 
-  LogOut, 
   Mail, 
-  HelpCircle,
   FileText,
   Layers
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
 
 const TeacherSidebar = () => {
   const location = useLocation();
   const path = location.pathname;
-  const { logout, user } = useAuth();
+  const { user } = useAuth();
   
   const isActive = (route: string) => path === route;
   
@@ -185,28 +182,8 @@ const TeacherSidebar = () => {
       </SidebarContent>
       
       <SidebarFooter>
-        <div className="p-4 space-y-3">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Help & Support">
-                <Link to="/teacher/help">
-                  <HelpCircle />
-                  <span>Help & Support</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-          
-          <Button 
-            variant="ghost" 
-            className="w-full justify-start text-red-500 hover:text-red-700 hover:bg-red-50"
-            onClick={logout}
-          >
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </Button>
-          
-          <div className="border-t pt-3 mt-3">
+        <div className="p-4">
+          <div className="border-t pt-3">
             <div className="flex items-center gap-3">
               <div className="h-8 w-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-medium text-sm">
                 {user?.name?.split(' ').map(n => n[0]).join('') || 'T'}
