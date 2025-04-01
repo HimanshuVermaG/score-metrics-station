@@ -9,6 +9,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 
 // Pages
+import LandingPage from "./pages/LandingPage";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -55,13 +56,14 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               {/* Public routes */}
+              <Route path="/" element={<LandingPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               
               {/* Protected routes */}
               <Route element={<PrivateRoute />}>
                 {/* Student routes */}
-                <Route path="/" element={<Index />} />
+                <Route path="/dashboard" element={<Index />} />
                 <Route path="/tests" element={<Tests />} />
                 <Route path="/tests/start/:testId" element={<TestPage />} />
                 <Route path="/tests/review/:testId" element={<TestResult />} />

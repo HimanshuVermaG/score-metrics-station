@@ -5,7 +5,7 @@ import { Bell, Search, User, LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 const navItems = [
-  { name: 'Dashboard', path: '/' },
+  { name: 'Dashboard', path: '/dashboard' },
   { name: 'Tests', path: '/tests' },
   { name: 'Quizzes', path: '/quizzes' },
   { name: 'Practice', path: '/practice' },
@@ -22,7 +22,7 @@ const Navbar = () => {
     <div className="border-b">
       <div className="flex h-16 items-center px-4 max-w-7xl mx-auto">
         <div className="flex items-center mr-10">
-          <Link to="/" className="text-xl font-bold text-brand-purple">
+          <Link to="/dashboard" className="text-xl font-bold text-brand-purple">
             Student Homepage
           </Link>
         </div>

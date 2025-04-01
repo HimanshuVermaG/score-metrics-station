@@ -22,7 +22,7 @@ const PrivateRoute = () => {
 
   // Redirect students trying to access teacher routes
   if (userType === 'student' && path.startsWith('/teacher')) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <Outlet />;
