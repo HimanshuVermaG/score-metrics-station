@@ -1,14 +1,11 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { BarChart3, Book, Award, Sparkles, Target, Users, BookOpen, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import LandingNavbar from '@/components/layout/LandingNavbar';
-
 const LandingPage = () => {
-  return (
-    <div className="min-h-screen flex flex-col bg-white">
+  return <div className="min-h-screen flex flex-col bg-white">
       <LandingNavbar />
       
       {/* Hero Section */}
@@ -28,18 +25,14 @@ const LandingPage = () => {
                 </Button>
               </Link>
               <Link to="/login">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto font-bold">
                   Log in
                 </Button>
               </Link>
             </div>
           </div>
           <div className="md:w-1/2">
-            <img 
-              src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" 
-              alt="Students learning" 
-              className="rounded-lg shadow-xl w-full h-auto"
-            />
+            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt="Students learning" className="rounded-lg shadow-xl w-full h-auto" />
           </div>
         </div>
       </section>
@@ -57,41 +50,17 @@ const LandingPage = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <FeatureCard 
-              icon={<BarChart3 className="h-10 w-10 text-indigo-600" />}
-              title="Performance Analytics"
-              description="Track progress with detailed analytics and visualizations to identify strengths and areas for improvement."
-            />
+            <FeatureCard icon={<BarChart3 className="h-10 w-10 text-indigo-600" />} title="Performance Analytics" description="Track progress with detailed analytics and visualizations to identify strengths and areas for improvement." />
             
-            <FeatureCard 
-              icon={<Book className="h-10 w-10 text-indigo-600" />}
-              title="Interactive Learning"
-              description="Engage with interactive quizzes, tests, and practice exercises tailored to individual learning needs."
-            />
+            <FeatureCard icon={<Book className="h-10 w-10 text-indigo-600" />} title="Interactive Learning" description="Engage with interactive quizzes, tests, and practice exercises tailored to individual learning needs." />
             
-            <FeatureCard 
-              icon={<Award className="h-10 w-10 text-indigo-600" />}
-              title="Achievement Tracking"
-              description="Monitor achievements and track improvement over time with detailed progress reports."
-            />
+            <FeatureCard icon={<Award className="h-10 w-10 text-indigo-600" />} title="Achievement Tracking" description="Monitor achievements and track improvement over time with detailed progress reports." />
             
-            <FeatureCard 
-              icon={<Target className="h-10 w-10 text-indigo-600" />}
-              title="Targeted Practice"
-              description="Focus on weak areas with customized practice sessions and targeted exercises."
-            />
+            <FeatureCard icon={<Target className="h-10 w-10 text-indigo-600" />} title="Targeted Practice" description="Focus on weak areas with customized practice sessions and targeted exercises." />
             
-            <FeatureCard 
-              icon={<Users className="h-10 w-10 text-indigo-600" />}
-              title="Classroom Management"
-              description="Teachers can manage multiple classes, assign tasks, and track student performance efficiently."
-            />
+            <FeatureCard icon={<Users className="h-10 w-10 text-indigo-600" />} title="Classroom Management" description="Teachers can manage multiple classes, assign tasks, and track student performance efficiently." />
             
-            <FeatureCard 
-              icon={<BookOpen className="h-10 w-10 text-indigo-600" />}
-              title="Comprehensive Curriculum"
-              description="Access a wide range of subjects and topics aligned with educational standards."
-            />
+            <FeatureCard icon={<BookOpen className="h-10 w-10 text-indigo-600" />} title="Comprehensive Curriculum" description="Access a wide range of subjects and topics aligned with educational standards." />
           </div>
         </div>
       </section>
@@ -178,7 +147,7 @@ const LandingPage = () => {
               </Button>
             </Link>
             <Link to="/login">
-              <Button size="lg" variant="outline" className="text-white border-white hover:bg-indigo-700 w-full sm:w-auto">
+              <Button size="lg" variant="outline" className="border-white w-full sm:w-auto bg-indigo-700 hover:bg-indigo-600 text-zinc-50">
                 Log In
               </Button>
             </Link>
@@ -192,12 +161,7 @@ const LandingPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center text-2xl font-bold text-white mb-4">
-                <svg 
-                  className="w-8 h-8 mr-2 text-indigo-400" 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  viewBox="0 0 24 24" 
-                  fill="currentColor"
-                >
+                <svg className="w-8 h-8 mr-2 text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
                 </svg>
                 EduConnect
@@ -239,30 +203,35 @@ const LandingPage = () => {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
 
 // Helper Components
-const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) => {
-  return (
-    <Card className="border-none shadow-md hover:shadow-lg transition-shadow">
+const FeatureCard = ({
+  icon,
+  title,
+  description
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) => {
+  return <Card className="border-none shadow-md hover:shadow-lg transition-shadow">
       <CardContent className="p-6 text-center">
         <div className="inline-flex p-3 rounded-full bg-indigo-50 mb-4">{icon}</div>
         <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
         <p className="text-gray-600">{description}</p>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
-const FeatureListItem = ({ text }: { text: string }) => {
-  return (
-    <li className="flex items-start">
+const FeatureListItem = ({
+  text
+}: {
+  text: string;
+}) => {
+  return <li className="flex items-start">
       <CheckCircle2 className="h-5 w-5 text-indigo-600 mt-0.5 mr-2 flex-shrink-0" />
       <span className="text-gray-700">{text}</span>
-    </li>
-  );
+    </li>;
 };
-
 export default LandingPage;
