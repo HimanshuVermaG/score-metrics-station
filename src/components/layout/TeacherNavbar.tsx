@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell, Search, User, LogOut, Mail, Calendar, HelpCircle } from 'lucide-react';
+import { Bell, Search, User, LogOut, Mail, Calendar, HelpCircle, FileText, BookOpen } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   DropdownMenu,
