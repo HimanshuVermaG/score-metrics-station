@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import PageContainer from '@/components/layout/PageContainer';
@@ -8,8 +7,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { getTestQuestions } from '@/data/questionSets';
 import QuizQuestion from '@/components/quiz/QuizQuestion';
-import { BookOpen, Award, BarChart2, CheckCircle, Brain, ArrowRight } from 'lucide-react';
+import { BookOpen, Award, BarChart2, Brain, CheckCircle, ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { ChartContainer } from '@/components/ui/chart';
 
 const SubjectImprovement = () => {
   const { subjectId } = useParams<{ subjectId: string }>();
@@ -218,53 +218,19 @@ const SubjectImprovement = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="font-medium mb-3">Weak vs. Strong Areas</h3>
-                  <div className="h-60">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={[
-                          ...subject.weakAreas.map((area) => ({
-                            name: area,
-                            score: 40 + Math.floor(Math.random() * 20),
-                            category: 'Weak'
-                          })),
-                          ...subject.strongAreas.map((area) => ({
-                            name: area,
-                            score: 70 + Math.floor(Math.random() * 20),
-                            category: 'Strong'
-                          }))
-                        ]}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis domain={[0, 100]} />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="score" fill="#8884d8" />
-                      </BarChart>
-                    </ResponsiveContainer>
+                  <div className="h-60 border rounded-md p-4 flex flex-col items-center justify-center bg-gray-50">
+                    <BarChart2 className="h-24 w-24 text-gray-300 mb-2" />
+                    <p className="text-gray-500 text-center">Analytics visualization for weak vs. strong areas</p>
+                    <p className="text-xs text-gray-400 mt-2">Data includes scores for all subject areas</p>
                   </div>
                 </div>
                 
                 <div>
                   <h3 className="font-medium mb-3">Improvement Trends</h3>
-                  <div className="h-60">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart
-                        data={Array.from({ length: 6 }, (_, i) => ({
-                          month: `Month ${i + 1}`,
-                          performance: 40 + (i * 7) + Math.floor(Math.random() * 10)
-                        }))}
-                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" />
-                        <YAxis domain={[0, 100]} />
-                        <Tooltip />
-                        <Legend />
-                        <Line type="monotone" dataKey="performance" stroke="#82ca9d" activeDot={{ r: 8 }} />
-                      </LineChart>
-                    </ResponsiveContainer>
+                  <div className="h-60 border rounded-md p-4 flex flex-col items-center justify-center bg-gray-50">
+                    <BarChart2 className="h-24 w-24 text-gray-300 mb-2" />
+                    <p className="text-gray-500 text-center">Improvement trends over the last 6 months</p>
+                    <p className="text-xs text-gray-400 mt-2">Shows progress in all subject areas</p>
                   </div>
                 </div>
               </div>
@@ -293,28 +259,5 @@ const SubjectImprovement = () => {
     </PageContainer>
   );
 };
-
-// Adding the necessary components for charts
-const ResponsiveContainer = ({ children, width, height }) => (
-  <div style={{ width, height, position: 'relative' }}>{children}</div>
-);
-
-const BarChart = ({ children, data, margin }) => (
-  <div className="w-full h-full flex items-center justify-center">
-    <BarChart2 className="h-24 w-24 text-gray-300" />
-    <div className="absolute inset-0 flex items-center justify-center">
-      <p className="text-gray-500">Analytics visualization</p>
-    </div>
-  </div>
-);
-
-const LineChart = BarChart;
-const CartesianGrid = () => null;
-const XAxis = () => null;
-const YAxis = () => null;
-const Tooltip = () => null;
-const Legend = () => null;
-const Bar = () => null;
-const Line = () => null;
 
 export default SubjectImprovement;
