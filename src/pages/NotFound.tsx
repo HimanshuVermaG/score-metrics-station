@@ -5,14 +5,21 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 const NotFound = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
+  let locationPath = "";
+  
+  try {
+    const location = useLocation();
+    locationPath = location.pathname;
+    
+    useEffect(() => {
+      console.error(
+        "404 Error: User attempted to access non-existent route:",
+        locationPath
+      );
+    }, [locationPath]);
+  } catch (error) {
+    console.error("NotFound component used outside Router context");
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
