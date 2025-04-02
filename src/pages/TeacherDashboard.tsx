@@ -3,11 +3,10 @@ import React from 'react';
 import TeacherPageContainer from '@/components/layout/TeacherPageContainer';
 import TeacherStats from '@/components/dashboard/TeacherStats';
 import TeacherActionCards from '@/components/dashboard/TeacherActionCards';
-import TeacherPerformanceChart from '@/components/dashboard/TeacherPerformanceChart';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
-import { Users, Plus, BookOpen, ArrowUp, ArrowDown, Minus, BarChart2 } from 'lucide-react';
+import { Users, Plus, BookOpen, ArrowUp, ArrowDown, Minus, BarChart2, Activity } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import {
   BarChart,
@@ -102,6 +101,12 @@ const TeacherDashboard = () => {
           <p className="text-gray-600">Welcome back, {teacherName}</p>
         </div>
         <div className="flex space-x-4">
+          <Button variant="outline" className="flex items-center" asChild>
+            <Link to="/teacher/activity-log">
+              <Activity className="mr-2 h-4 w-4" />
+              Activity Log
+            </Link>
+          </Button>
           <Button variant="outline" className="flex items-center" asChild>
             <Link to="/teacher/students">
               <Users className="mr-2 h-4 w-4" />

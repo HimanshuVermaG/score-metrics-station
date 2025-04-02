@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { PlusCircle, BarChart2, Users } from 'lucide-react';
+import { PlusCircle, BarChart2, Users, Activity } from 'lucide-react';
 
 const ActionCard = ({ 
   title, 
@@ -31,7 +31,7 @@ const ActionCard = ({
 
 const TeacherActionCards = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
       <ActionCard 
         title="Create Quiz"
         description="Create a new quiz or test"
@@ -57,6 +57,15 @@ const TeacherActionCards = () => {
         bgColor="bg-blue-500"
         iconColor="bg-blue-400"
         to="/teacher/students"
+      />
+      
+      <ActionCard 
+        title="Activity Log"
+        description="Track all recent activities"
+        icon={Activity}
+        bgColor="bg-purple-600"
+        iconColor="bg-purple-500"
+        to="/teacher/activity-log"
       />
     </div>
   );
