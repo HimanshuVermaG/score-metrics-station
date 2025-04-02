@@ -1,5 +1,6 @@
+
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toast';
 
 type Student = {
   id: string;
@@ -42,6 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [userType, setUserType] = useState<'student' | 'teacher' | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  // We'll fix the toast import
   const { toast } = useToast();
 
   useEffect(() => {
