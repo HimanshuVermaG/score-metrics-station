@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import PageContainer from '@/components/layout/PageContainer';
@@ -7,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, ChevronRight, Target, BookOpen, Clock, Calendar, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ChevronRight, Target, BookOpen, Clock, Calendar, ArrowRight, PlayCircle, Brain, Award, FileText, CheckCircle } from 'lucide-react';
 import PlanMilestone from '@/components/improvement/PlanMilestone';
 import { ImprovementPlan } from '@/types/improvement-plan';
 
@@ -27,7 +26,7 @@ const improvementPlans = {
         id: "1",
         title: "Master Algebra Fundamentals",
         description: "Build a strong foundation in algebraic concepts and expressions",
-        status: "in-progress",
+        status: "in-progress" as "in-progress",
         dueDate: "June 1, 2023",
         resources: [
           {
@@ -63,7 +62,7 @@ const improvementPlans = {
         id: "2",
         title: "Advanced Geometry Concepts",
         description: "Learn about geometric shapes, theorems, and spatial reasoning",
-        status: "upcoming",
+        status: "upcoming" as "upcoming",
         dueDate: "June 15, 2023",
         resources: [
           {
@@ -99,7 +98,7 @@ const improvementPlans = {
         id: "3",
         title: "Calculus Introduction",
         description: "Introduce basic calculus concepts and applications",
-        status: "upcoming",
+        status: "upcoming" as "upcoming",
         dueDate: "July 1, 2023",
         resources: [
           {
@@ -147,7 +146,7 @@ const improvementPlans = {
         id: "1",
         title: "Grammar Essentials",
         description: "Master essential grammar rules and sentence structures",
-        status: "completed",
+        status: "completed" as "completed",
         dueDate: "May 25, 2023",
         resources: [
           {
@@ -174,7 +173,7 @@ const improvementPlans = {
         id: "2",
         title: "Vocabulary Expansion",
         description: "Build your vocabulary with word families and context clues",
-        status: "in-progress",
+        status: "in-progress" as "in-progress",
         dueDate: "June 15, 2023",
         resources: [
           {
@@ -213,7 +212,7 @@ const improvementPlans = {
         id: "1",
         title: "हिंदी व्याकरण (Hindi Grammar)",
         description: "Master fundamental Hindi grammar rules and sentence construction",
-        status: "in-progress",
+        status: "in-progress" as "in-progress",
         dueDate: "May 30, 2023",
         resources: [
           {
@@ -240,7 +239,7 @@ const improvementPlans = {
         id: "2",
         title: "शब्दावली विकास (Vocabulary Development)",
         description: "Expand your Hindi vocabulary through various exercises",
-        status: "upcoming",
+        status: "upcoming" as "upcoming",
         dueDate: "June 20, 2023",
         resources: [
           {
@@ -279,7 +278,7 @@ const improvementPlans = {
         id: "1",
         title: "Historical Events and Figures",
         description: "Learn about key historical events and important figures",
-        status: "in-progress",
+        status: "in-progress" as "in-progress",
         dueDate: "June 5, 2023",
         resources: [
           {
@@ -306,7 +305,7 @@ const improvementPlans = {
         id: "2",
         title: "World Geography",
         description: "Explore physical and political geography of the world",
-        status: "upcoming",
+        status: "upcoming" as "upcoming",
         dueDate: "June 25, 2023",
         resources: [
           {
