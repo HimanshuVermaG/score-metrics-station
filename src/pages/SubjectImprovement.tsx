@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import PageContainer from '@/components/layout/PageContainer';
@@ -7,9 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { getTestQuestions } from '@/data/questionSets';
 import QuizQuestion from '@/components/quiz/QuizQuestion';
-import { BookOpen, Award, BarChart2, Brain, CheckCircle, ArrowRight } from 'lucide-react';
+import { BookOpen, Award, Brain, CheckCircle, ArrowRight, BarChart2, Target } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { ChartContainer } from '@/components/ui/chart';
 
 const SubjectImprovement = () => {
   const { subjectId } = useParams<{ subjectId: string }>();
@@ -167,7 +167,7 @@ const SubjectImprovement = () => {
                     <p className="text-sm text-gray-600 mb-3">{item.description}</p>
                     <div className="flex justify-end">
                       <Button asChild variant="outline">
-                        <Link to="/practice">
+                        <Link to={`/improvement-plan/${subjectId?.toLowerCase() || 'math'}/milestone/${item.id}`}>
                           Start Practice
                           <ArrowRight className="ml-1 h-3 w-3" />
                         </Link>

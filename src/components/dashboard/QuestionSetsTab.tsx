@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { allQuestions } from '@/data/questionSets';
@@ -5,9 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Book, ArrowRight, BookOpen, GraduationCap, Brain, Globe } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+
 interface QuestionSetsTabProps {
   activeTab: string;
 }
+
 const QuestionSetsTab: React.FC<QuestionSetsTabProps> = ({
   activeTab
 }) => {
@@ -25,6 +28,7 @@ const QuestionSetsTab: React.FC<QuestionSetsTabProps> = ({
   const englishProgress = 55;
   const hindiProgress = 45;
   const gsProgress = 65;
+  
   return <div className="mt-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
         <Link to="/practice/math" className="block">
@@ -55,10 +59,9 @@ const QuestionSetsTab: React.FC<QuestionSetsTabProps> = ({
                   <p>Topics include Algebra, Geometry, Calculus and more</p>
                 </div>
                 <div className="flex justify-between items-center mt-2 pt-2 border-t">
-                  <div className="flex items-center space-x-1">
-                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    <span className="text-xs text-gray-600">Recently updated</span>
-                  </div>
+                  <Link to="/improvement-plan/math" className="text-xs hover:underline text-indigo-600">
+                    View improvement plan
+                  </Link>
                   <span className="text-sm font-medium text-brand-purple flex items-center">
                     View <ArrowRight className="ml-1 h-4 w-4" />
                   </span>
@@ -96,10 +99,9 @@ const QuestionSetsTab: React.FC<QuestionSetsTabProps> = ({
                   <p>Topics include Grammar, Vocabulary, Comprehension and more</p>
                 </div>
                 <div className="flex justify-between items-center mt-2 pt-2 border-t">
-                  <div className="flex items-center space-x-1">
-                    <div className="w-2 h-2 rounded-full bg-orange-500"></div>
-                    <span className="text-xs text-gray-600">Needs attention</span>
-                  </div>
+                  <Link to="/improvement-plan/english" className="text-xs hover:underline text-indigo-600">
+                    View improvement plan
+                  </Link>
                   <span className="text-sm font-medium text-brand-purple flex items-center">
                     View <ArrowRight className="ml-1 h-4 w-4" />
                   </span>
@@ -137,10 +139,9 @@ const QuestionSetsTab: React.FC<QuestionSetsTabProps> = ({
                   <p>Topics include Literature, Grammar, Comprehension and more</p>
                 </div>
                 <div className="flex justify-between items-center mt-2 pt-2 border-t">
-                  <div className="flex items-center space-x-1">
-                    <div className="w-2 h-2 rounded-full bg-red-500"></div>
-                    <span className="text-xs text-gray-600">Requires improvement</span>
-                  </div>
+                  <Link to="/improvement-plan/hindi" className="text-xs hover:underline text-indigo-600">
+                    View improvement plan
+                  </Link>
                   <span className="text-sm font-medium text-brand-purple flex items-center">
                     View <ArrowRight className="ml-1 h-4 w-4" />
                   </span>
@@ -178,10 +179,9 @@ const QuestionSetsTab: React.FC<QuestionSetsTabProps> = ({
                   <p>Topics include History, Geography, Science and more</p>
                 </div>
                 <div className="flex justify-between items-center mt-2 pt-2 border-t">
-                  <div className="flex items-center space-x-1">
-                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    <span className="text-xs text-gray-600">On track</span>
-                  </div>
+                  <Link to="/improvement-plan/gs" className="text-xs hover:underline text-indigo-600">
+                    View improvement plan
+                  </Link>
                   <span className="text-sm font-medium text-brand-purple flex items-center">
                     View <ArrowRight className="ml-1 h-4 w-4" />
                   </span>
@@ -193,4 +193,5 @@ const QuestionSetsTab: React.FC<QuestionSetsTabProps> = ({
       </div>
     </div>;
 };
+
 export default QuestionSetsTab;

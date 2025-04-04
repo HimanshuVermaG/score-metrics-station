@@ -31,8 +31,9 @@ import PracticePage from "./pages/PracticePage";
 import Grades from "./pages/Grades";
 import Assignments from "./pages/Assignments";
 import AssignmentDetail from "./pages/AssignmentDetail";
-import SubjectQuestionsPage from "./pages/SubjectQuestionsPage";
 import PersonalizedImprovementPlanPage from "./pages/PersonalizedImprovementPlanPage";
+import MilestoneDetailPage from "./pages/MilestoneDetailPage";
+import ResourceDetailPage from "./pages/ResourceDetailPage";
 
 // Teacher Pages
 import TeacherDashboard from "./pages/TeacherDashboard";
@@ -88,6 +89,8 @@ const App = () => {
                 <Route path="/assignments" element={<Assignments />} />
                 <Route path="/assignments/:assignmentId" element={<AssignmentDetail />} />
                 <Route path="/improvement-plan/:planId" element={<PersonalizedImprovementPlanPage />} />
+                <Route path="/improvement-plan/:planId/milestone/:milestoneId" element={<MilestoneDetailPage />} />
+                <Route path="/improvement-plan/:planId/resource/:resourceId" element={<ResourceDetailPage />} />
                 
                 {/* Teacher routes */}
                 <Route path="/teacher" element={<TeacherDashboard />} />
