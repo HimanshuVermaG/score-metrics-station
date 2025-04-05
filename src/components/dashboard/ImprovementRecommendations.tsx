@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { ArrowRight, AlertCircle, BookOpen, Award, Brain } from 'lucide-react';
 
 interface RecommendationItem {
@@ -52,10 +53,17 @@ const ImprovementRecommendations: React.FC<ImprovementRecommendationsProps> = ({
   return (
     <Card className="border-none shadow-md mb-6">
       <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2">
-          <AlertCircle className="h-5 w-5 text-brand-purple" />
-          Personalized Improvement Plan
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2">
+            <AlertCircle className="h-5 w-5 text-brand-purple" />
+            Personalized Improvement Plan
+          </CardTitle>
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/improvement-plan/math">
+              View Full Plan <ArrowRight className="ml-1 h-3 w-3" />
+            </Link>
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         {weakAreas.length > 0 && (
