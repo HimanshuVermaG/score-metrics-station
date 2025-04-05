@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import PageContainer from '@/components/layout/PageContainer';
@@ -8,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ArrowLeft, PlayCircle, FileText, BookOpen, Brain, Award, ClipboardCheck, Clock, Calendar } from 'lucide-react';
 import { PlanResource } from '@/types/improvement-plan';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toaster';
 
 const ResourceDetailPage = () => {
   const { planId, resourceId } = useParams<{ planId: string; resourceId: string }>();
@@ -16,7 +17,9 @@ const ResourceDetailPage = () => {
   const [completed, setCompleted] = useState(false);
   const [loading, setLoading] = useState(true);
   
+  // Sample resource data - in a real app, this would come from an API
   useEffect(() => {
+    // Simulate API call
     setTimeout(() => {
       const resourceSample: PlanResource = {
         id: resourceId || 'r1',
@@ -44,6 +47,7 @@ const ResourceDetailPage = () => {
 
   const handleMarkComplete = () => {
     setCompleted(!completed);
+    // Here you would also update this in your backend
   };
 
   const getResourceIcon = (type: string) => {

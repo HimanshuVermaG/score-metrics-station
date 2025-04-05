@@ -34,7 +34,6 @@ import AssignmentDetail from "./pages/AssignmentDetail";
 import PersonalizedImprovementPlanPage from "./pages/PersonalizedImprovementPlanPage";
 import MilestoneDetailPage from "./pages/MilestoneDetailPage";
 import ResourceDetailPage from "./pages/ResourceDetailPage";
-import SubjectQuestionsPage from "./pages/SubjectQuestionsPage";
 
 // Teacher Pages
 import TeacherDashboard from "./pages/TeacherDashboard";
