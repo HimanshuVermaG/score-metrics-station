@@ -1,10 +1,12 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Clock } from 'lucide-react';
+import { Clock, ArrowRight } from 'lucide-react';
 import { PlanResource } from '@/types/improvement-plan';
 import ResourceItem from './ResourceItem';
+import { Button } from '@/components/ui/button';
 
 interface MilestoneProps {
   id: string;
@@ -60,6 +62,15 @@ const PlanMilestone: React.FC<MilestoneProps> = ({
           {resources.map((resource) => (
             <ResourceItem key={resource.id} resource={resource} />
           ))}
+        </div>
+        
+        <div className="mt-4 flex justify-end">
+          <Button variant="outline" asChild>
+            <Link to={`/milestone/${id}`}>
+              View Milestone Details
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
         </div>
       </CardContent>
     </Card>

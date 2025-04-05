@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, AlertCircle, BookOpen, Award, Brain } from 'lucide-react';
+import { ArrowRight, AlertCircle, BookOpen, Award, Brain, FileText } from 'lucide-react';
 
 interface RecommendationItem {
   id: string;
@@ -48,6 +48,13 @@ const ImprovementRecommendations: React.FC<ImprovementRecommendationsProps> = ({
       case 'practice': return <Award className="h-4 w-4" />;
       default: return <BookOpen className="h-4 w-4" />;
     }
+  };
+
+  // Extract the resource ID from the link
+  const getResourceId = (link: string) => {
+    // Get the last part of the URL after the last '/'
+    const parts = link.split('/');
+    return parts[parts.length - 1];
   };
 
   return (
@@ -121,7 +128,7 @@ const ImprovementRecommendations: React.FC<ImprovementRecommendationsProps> = ({
                   {rec.subject}
                 </Badge>
                 <Link 
-                  to={rec.link} 
+                  to={rec.type === 'practice' ? `/resources/${getResourceId(rec.link)}` : rec.link}
                   className="text-sm text-brand-purple hover:underline flex items-center"
                 >
                   Start now

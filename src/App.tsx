@@ -33,6 +33,8 @@ import Assignments from "./pages/Assignments";
 import AssignmentDetail from "./pages/AssignmentDetail";
 import SubjectQuestionsPage from "./pages/SubjectQuestionsPage";
 import PersonalizedImprovementPlanPage from "./pages/PersonalizedImprovementPlanPage";
+import MilestoneDetailPage from "./pages/MilestoneDetailPage";
+import ResourceDetailPage from "./pages/ResourceDetailPage";
 
 // Teacher Pages
 import TeacherDashboard from "./pages/TeacherDashboard";
@@ -88,6 +90,10 @@ const App = () => {
                 <Route path="/assignments" element={<Assignments />} />
                 <Route path="/assignments/:assignmentId" element={<AssignmentDetail />} />
                 <Route path="/improvement-plan/:planId" element={<PersonalizedImprovementPlanPage />} />
+                
+                {/* New routes for milestones and resources */}
+                <Route path="/milestone/:milestoneId" element={<MilestoneDetailPage />} />
+                <Route path="/resources/:resourceId" element={<ResourceDetailPage />} />
                 
                 {/* Teacher routes */}
                 <Route path="/teacher" element={<TeacherDashboard />} />

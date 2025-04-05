@@ -22,6 +22,13 @@ const ResourceItem: React.FC<ResourceItemProps> = ({ resource }) => {
     }
   };
 
+  // Extract the resource ID from the link
+  const getResourceId = (link: string) => {
+    // Get the last part of the URL after the last '/'
+    const parts = link.split('/');
+    return parts[parts.length - 1];
+  };
+
   return (
     <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
       <div className="flex items-center">
@@ -55,7 +62,7 @@ const ResourceItem: React.FC<ResourceItemProps> = ({ resource }) => {
           </Badge>
         ) : null}
         <Button size="sm" variant="outline" asChild>
-          <Link to={resource.link}>
+          <Link to={`/resources/${getResourceId(resource.link)}`}>
             Start
             <ArrowRight className="ml-1 h-3 w-3" />
           </Link>
