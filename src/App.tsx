@@ -31,9 +31,7 @@ import PracticePage from "./pages/PracticePage";
 import Grades from "./pages/Grades";
 import Assignments from "./pages/Assignments";
 import AssignmentDetail from "./pages/AssignmentDetail";
-import PersonalizedImprovementPlanPage from "./pages/PersonalizedImprovementPlanPage";
-import MilestoneDetailPage from "./pages/MilestoneDetailPage";
-import ResourceDetailPage from "./pages/ResourceDetailPage";
+import SubjectQuestionsPage from "./pages/SubjectQuestionsPage";
 
 // Teacher Pages
 import TeacherDashboard from "./pages/TeacherDashboard";
@@ -47,6 +45,7 @@ import TeacherCreateContent from "./pages/TeacherCreateContent";
 import TeacherStudents from "./pages/TeacherStudents";
 import TeacherReviews from "./pages/TeacherReviews";
 import TeacherActivityLog from "./pages/TeacherActivityLog";
+import TeacherCalendar from "./pages/TeacherCalendar";
 import TeacherProfile from "./pages/TeacherProfile";
 
 // Properly wrap the application with providers
@@ -88,9 +87,6 @@ const App = () => {
                 <Route path="/tasks/:taskId" element={<TaskPage />} />
                 <Route path="/assignments" element={<Assignments />} />
                 <Route path="/assignments/:assignmentId" element={<AssignmentDetail />} />
-                <Route path="/improvement-plan/:planId" element={<PersonalizedImprovementPlanPage />} />
-                <Route path="/improvement-plan/:planId/milestone/:milestoneId" element={<MilestoneDetailPage />} />
-                <Route path="/improvement-plan/:planId/resource/:resourceId" element={<ResourceDetailPage />} />
                 
                 {/* Teacher routes */}
                 <Route path="/teacher" element={<TeacherDashboard />} />
@@ -104,6 +100,7 @@ const App = () => {
                 <Route path="/teacher/class/8" element={<TeacherClass8 />} />
                 <Route path="/teacher/reviews" element={<TeacherReviews />} />
                 <Route path="/teacher/activity-log" element={<TeacherActivityLog />} />
+                <Route path="/teacher/calendar" element={<TeacherCalendar />} />
                 <Route path="/teacher/profile" element={<TeacherProfile />} />
               </Route>
               

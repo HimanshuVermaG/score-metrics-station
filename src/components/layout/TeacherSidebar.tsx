@@ -21,6 +21,7 @@ import {
   Users, 
   Activity, 
   BookOpen, 
+  Calendar, 
   Settings, 
   Mail, 
   FileText,
@@ -100,8 +101,8 @@ const TeacherSidebar = () => {
               </SidebarMenuItem>
               
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isActive('/teacher/activity-log')} tooltip="Activity Log">
-                  <Link to="/teacher/activity-log">
+                <SidebarMenuButton asChild isActive={isActive('/teacher/activity')} tooltip="Activity Log">
+                  <Link to="/teacher/activity">
                     <Activity />
                     <span>Activity Log</span>
                   </Link>
@@ -149,6 +150,15 @@ const TeacherSidebar = () => {
           <SidebarGroupLabel>OTHER</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActive('/teacher/calendar')} tooltip="Calendar">
+                  <Link to="/teacher/calendar">
+                    <Calendar />
+                    <span>Calendar</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              
               <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={isActive('/teacher/messages')} tooltip="Messages">
                   <Link to="/teacher/messages">
