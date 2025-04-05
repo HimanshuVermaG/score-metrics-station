@@ -10,9 +10,56 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/components/ui/use-toast';
 
+// Define more specific content types for better TypeScript support
+type VideoContent = {
+  videoUrl: string;
+  sections: { title: string; timestamp: string; completed: boolean; }[];
+}
+
+type DocumentContent = {
+  sections: { title: string; content: string; }[];
+}
+
+type InteractiveContent = {
+  introduction: string;
+  problems: { 
+    id: number; 
+    problem: string; 
+    solution: string; 
+    steps: string[]; 
+    completed: boolean;
+  }[];
+}
+
+type QuizItem = {
+  question: string;
+  options: string[];
+  correctAnswer: string;
+}
+
+// Define the resource type with discriminated union for content
+type Resource = {
+  id: string;
+  title: string;
+  type: 'video' | 'document' | 'quiz' | 'interactive';
+  duration: string;
+  difficulty: string;
+  milestoneId: string;
+  milestoneName: string;
+  completed: boolean;
+  progress: number;
+  description: string;
+  relatedResources: { id: string; title: string }[];
+} & (
+  | { type: 'video'; content: VideoContent; quiz?: QuizItem[] }
+  | { type: 'document'; content: DocumentContent }
+  | { type: 'interactive'; content: InteractiveContent }
+  | { type: 'quiz'; content: any } // Add more specific quiz content type if needed
+);
+
 // Mock data
-const getResourceData = (resourceId: string) => {
-  const resources = {
+const getResourceData = (resourceId: string): Resource => {
+  const resources: Record<string, Resource> = {
     'algebra-basics': {
       id: 'resource-1',
       title: 'Algebra Basics Video Course',
@@ -184,12 +231,13 @@ const ResourceDetailPage = () => {
   
   const renderResourceContent = () => {
     switch (resource.type) {
-      case 'video':
+      case 'video': {
+        const videoContent = resource.content as VideoContent;
         return (
           <div className="space-y-6">
             <div className="aspect-video w-full bg-gray-100 rounded-lg overflow-hidden">
               <iframe 
-                src={resource.content.videoUrl} 
+                src={videoContent.videoUrl} 
                 className="w-full h-full" 
                 title={resource.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -200,7 +248,7 @@ const ResourceDetailPage = () => {
             <div>
               <h3 className="text-lg font-medium mb-2">Video Chapters</h3>
               <div className="space-y-2">
-                {resource.content.sections.map((section, index) => (
+                {videoContent.sections.map((section, index) => (
                   <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
                     <div className="flex items-center">
                       {section.completed ? (
@@ -217,16 +265,18 @@ const ResourceDetailPage = () => {
             </div>
           </div>
         );
+      }
         
-      case 'interactive':
+      case 'interactive': {
+        const interactiveContent = resource.content as InteractiveContent;
         return (
           <div className="space-y-6">
-            <p className="text-gray-700">{resource.content.introduction}</p>
+            <p className="text-gray-700">{interactiveContent.introduction}</p>
             
             <div>
               <h3 className="text-lg font-medium mb-2">Practice Problems</h3>
               <div className="space-y-4">
-                {resource.content.problems.map((problem) => (
+                {interactiveContent.problems.map((problem) => (
                   <Card key={problem.id}>
                     <CardHeader>
                       <CardTitle className="text-base flex items-center">
@@ -281,11 +331,13 @@ const ResourceDetailPage = () => {
             </div>
           </div>
         );
+      }
         
-      case 'document':
+      case 'document': {
+        const documentContent = resource.content as DocumentContent;
         return (
           <div className="space-y-6">
-            {resource.content.sections.map((section, index) => (
+            {documentContent.sections.map((section, index) => (
               <div key={index}>
                 <h3 className="text-lg font-medium mb-2">{section.title}</h3>
                 <p className="text-gray-700">{section.content}</p>
@@ -293,6 +345,7 @@ const ResourceDetailPage = () => {
             ))}
           </div>
         );
+      }
         
       default:
         return (
@@ -302,6 +355,11 @@ const ResourceDetailPage = () => {
           </div>
         );
     }
+  };
+  
+  // Helper function to check if the resource has a quiz
+  const hasQuiz = () => {
+    return resource.type === 'video' && 'quiz' in resource;
   };
   
   return (
@@ -361,7 +419,7 @@ const ResourceDetailPage = () => {
       <Tabs defaultValue="content" value={selectedTab} onValueChange={setSelectedTab} className="mb-6">
         <TabsList className="mb-4">
           <TabsTrigger value="content">Content</TabsTrigger>
-          {resource.type === 'video' && resource.quiz && (
+          {hasQuiz() && (
             <TabsTrigger value="quiz">Quiz</TabsTrigger>
           )}
           <TabsTrigger value="notes">Notes</TabsTrigger>
@@ -376,7 +434,7 @@ const ResourceDetailPage = () => {
           </Card>
         </TabsContent>
         
-        {resource.type === 'video' && resource.quiz && (
+        {hasQuiz() && (
           <TabsContent value="quiz" className="mt-0">
             <Card>
               <CardHeader>
@@ -384,7 +442,8 @@ const ResourceDetailPage = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  {resource.quiz.map((item, index) => (
+                  {/* Type assertion for 'quiz' property */}
+                  {resource.type === 'video' && 'quiz' in resource && resource.quiz?.map((item, index) => (
                     <div key={index} className="border rounded-lg p-4">
                       <p className="font-medium mb-3">Question {index + 1}: {item.question}</p>
                       <div className="space-y-2">
